@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="智光工作室：帮中小企业上线能省人的智能体，两周可验收。" />
+  <title>智光工作室 · 能省人的智能体</title>
+  <style>
+    :root {
+      --ink: #0A2422;
+      --teal: #0F5C56;
+      --teal-mid: #1A7A72;
+      --teal-soft: #E6F2F0;
+      --accent: #C45C26;
+      --accent-hover: #A84C1E;
+      --bone: #F6F3ED;
+      --card: #FFFFFF;
+      --muted: #5C6B69;
+      --line: #D8E0DE;
+      --ok: #2F7D4A;
+      --radius-sm: 6px;
+      --radius: 10px;
+      --radius-lg: 14px;
+      --font-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+        "Noto Sans SC", "Source Han Sans SC", system-ui, -apple-system,
+        "Segoe UI", sans-serif;
+      --shadow: 0 1px 2px rgba(10, 36, 34, 0.04), 0 8px 24px rgba(10, 36, 34, 0.06);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bone);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+      min-height: 100dvh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; }
+
+    .wrap {
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 20px 16px 48px;
+    }
+
+    /* Header */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .brand-name {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+    .brand-sub {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    /* Hero */
+    .hero {
+      margin-bottom: 28px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--teal-soft);
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    .badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal-mid);
+    }
+    .hero h1 {
+      font-size: clamp(24px, 6.5vw, 30px);
+      font-weight: 700;
+      line-height: 1.28;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--teal);
+    }
+    .one-liner {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* Value props - asymmetric, not three equal cards */
+    .values {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .value {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 16px 16px 16px 14px;
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 12px;
+      align-items: start;
+      box-shadow: var(--shadow);
+    }
+    .value:nth-child(2) {
+      border-left: 3px solid var(--accent);
+    }
+    .value-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius);
+      background: var(--teal-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--teal);
+    }
+    .value:nth-child(2) .value-icon {
+      background: #F8EDE6;
+      color: var(--accent);
+    }
+    .value h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .value p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Pricing */
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--teal);
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+      text-transform: none;
+    }
+
+    .pricing {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .price-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 18px 16px;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+    .price-card.featured {
+      border-color: var(--teal);
+      background: linear-gradient(165deg, #FFFFFF 60%, var(--teal-soft) 100%);
+    }
+    .price-card.featured .tag {
+      position: absolute;
+      top: -9px;
+      right: 14px;
+      background: var(--teal);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+    .price-tier {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .price-amount {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+    .price-amount .num {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    .price-amount .unit {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .price-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+    .price-desc strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .pay-note {
+      font-size: 12px;
+      color: var(--muted);
+      background: var(--card);
+      border: 1px dashed var(--line);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-bottom: 28px;
+      line-height: 1.55;
+    }
+    .pay-note strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* CTA */
+    .cta-block {
+      margin-bottom: 28px;
+    }
+    .cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 48px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 180ms ease;
+      font-family: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cta:hover { background: var(--accent-hover); }
+    .cta:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .cta-hint {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    footer .legal {
+      margin-bottom: 10px;
+    }
+    footer .account {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      color: var(--ink);
+      font-size: 12px;
+    }
+    footer .account span {
+      color: var(--muted);
+    }
+
+    @media (min-width: 480px) {
+      .wrap { padding: 28px 20px 56px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cta { transition: none; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#0F5C56"/>
+        <path d="M8 22 L16 8 L20 14 L24 10" fill="none" stroke="#F6F3ED"
+              stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="24" cy="10" r="2" fill="#C45C26"/>
+      </svg>
+      <div class="brand-text">
+        <div class="brand-name">智光工作室</div>
+        <div class="brand-sub">Zhiguang Studio</div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="badge">两周内可验收</div>
+      <h1>帮中小企业上线<br /><em>能省人的智能体</em></h1>
+      <p class="one-liner">
+        客服接待、销售跟进、内部流程：按场景落地，按项目或按月收费。本地服务型中小企与销售小团队可直接试点。
+      </p>
+    </section>
+
+    <section class="values" aria-label="核心能力">
+      <article class="value">
+        <div class="value-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </div>
+        <div>
+          <h3>客服接待</h3>
+          <p>常见问题自动应答，复杂诉求转人工；夜间与高峰不丢单。</p>
+        </div>
+      </article>
+      <article class="value">
+        <div class="value-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div>
+          <h3>销售跟进</h3>
+          <p>线索提醒、回访话术与阶段推进，补足人手不足的跟进空档。</p>
+        </div>
+      </article>
+      <article class="value">
+        <div class="value-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <div>
+          <h3>内部流程</h3>
+          <p>报备、审批、资料归档等重复动作自动化，少人也能跑顺。</p>
+        </div>
+      </article>
+    </section>
+
+    <p class="section-label">收费方案</p>
+    <section class="pricing" aria-label="定价">
+      <article class="price-card">
+        <div class="price-tier">入门试点</div>
+        <div class="price-amount">
+          <span class="num">0.8–1万</span>
+          <span class="unit">/ 次</span>
+        </div>
+        <p class="price-desc"><strong>单场景</strong>，约 2 周交付验收。适合先验证一个痛点。</p>
+      </article>
+      <article class="price-card featured">
+        <span class="tag">常用</span>
+        <div class="price-tier">标准试点</div>
+        <div class="price-amount">
+          <span class="num">1.5万</span>
+          <span class="unit">/ 次</span>
+        </div>
+        <p class="price-desc"><strong>1–2 个场景</strong>联调上线，覆盖接待 + 跟进等组合。</p>
+      </article>
+      <article class="price-card">
+        <div class="price-tier">包月管家</div>
+        <div class="price-amount">
+          <span class="num">3–5千</span>
+          <span class="unit">/ 月</span>
+        </div>
+        <p class="price-desc">上线后运维、话术迭代与小需求调整，按月预收。</p>
+      </article>
+    </section>
+
+    <p class="pay-note">
+      <strong>付款说明：</strong>试点 50% 预付 / 50% 验收；包月按月预收。工作室开具收据。
+    </p>
+
+    <div class="cta-block">
+      <a class="cta" href="#book" id="book">预约试点</a>
+      <p class="cta-hint">微信转发本页给决策人，或直接约 15 分钟沟通</p>
+    </div>
+
+    <footer>
+      <p class="legal">工作室交付 · 开具收据 · 主体办理中不开专票</p>
+      <p class="account"><span>收款账户：</span>签约后提供（不广传实账，意向确认后私发）</p>
+    </footer>
+  </div>
+</body>
+</html>

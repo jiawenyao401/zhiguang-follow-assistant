@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="智光跟进助手演示：销售线索列表、详情、建议话术、标记完成。" />
+  <title>智光跟进助手 · 销售跟进 Demo</title>
+  <style>
+    :root {
+      --ink: #0A2422;
+      --teal: #0F5C56;
+      --teal-mid: #1A7A72;
+      --teal-soft: #E6F2F0;
+      --accent: #C45C26;
+      --accent-hover: #A84C1E;
+      --bone: #F6F3ED;
+      --card: #FFFFFF;
+      --muted: #5C6B69;
+      --line: #D8E0DE;
+      --ok: #2F7D4A;
+      --warn: #B8860B;
+      --bar: #0A2422;
+      --bar-fg: #F6F3ED;
+      --bar-muted: #9BB0AD;
+      --radius-sm: 6px;
+      --radius: 10px;
+      --radius-lg: 14px;
+      --font-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+        "Noto Sans SC", "Source Han Sans SC", system-ui, -apple-system,
+        "Segoe UI", sans-serif;
+      --sidebar-w: 200px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font-sans);
+      background: var(--bone);
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .app {
+      display: flex;
+      flex-direction: column;
+      min-height: 100dvh;
+      max-height: 100dvh;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--bar);
+      color: var(--bar-fg);
+      flex-shrink: 0;
+      min-height: 52px;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .topbar-mark { width: 28px; height: 28px; flex-shrink: 0; }
+    .topbar-title {
+      font-size: 15px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .topbar-title span {
+      font-weight: 400;
+      color: var(--bar-muted);
+      font-size: 12px;
+      margin-left: 6px;
+    }
+    .badge-accept {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(230, 242, 240, 0.15);
+      color: #B8D9D4;
+      border: 1px solid rgba(184, 217, 212, 0.35);
+      padding: 4px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .badge-accept::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #5CB8A8;
+    }
+
+    .shell {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .sidenav {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      background: var(--card);
+      border-right: 1px solid var(--line);
+      padding: 16px 10px;
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sidenav-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      padding: 4px 10px 10px;
+      letter-spacing: 0.04em;
+    }
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      text-align: left;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      transition: background 160ms ease, color 160ms ease;
+      min-height: 44px;
+    }
+    .nav-btn svg { flex-shrink: 0; opacity: 0.85; }
+    .nav-btn:hover { background: var(--teal-soft); color: var(--teal); }
+    .nav-btn[aria-selected="true"] {
+      background: var(--teal-soft);
+      color: var(--teal);
+      font-weight: 600;
+    }
+    .nav-btn:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 1px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      padding: 10px 12px 0;
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+      flex-shrink: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .tab {
+      flex: 1;
+      min-width: max-content;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      border-bottom: 2px solid transparent;
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      min-height: 44px;
+      transition: color 160ms ease;
+    }
+    .tab[aria-selected="true"] {
+      color: var(--teal);
+      font-weight: 600;
+      border-bottom-color: var(--teal);
+    }
+    .tab:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: -2px;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 0;
+      background: var(--bone);
+    }
+
+    .panel {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+    }
+    .panel.active { display: flex; }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+    .panel-head h2 { font-size: 15px; font-weight: 600; }
+    .status-pill {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #E8F5EC;
+      color: var(--ok);
+    }
+    .status-pill.warn {
+      background: #FBF3DC;
+      color: var(--warn);
+    }
+
+    .chat-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .msg {
+      max-width: 88%;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .msg.agent { align-self: flex-start; }
+    .msg.user { align-self: flex-end; align-items: flex-end; }
+    .msg-meta {
+      font-size: 11px;
+      color: var(--muted);
+      padding: 0 4px;
+    }
+    .bubble {
+      padding: 10px 13px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.55;
+      word-break: break-word;
+    }
+    .msg.agent .bubble {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-bottom-left-radius: 4px;
+    }
+    .msg.user .bubble {
+      background: var(--teal);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .bubble .hint {
+      display: block;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--line);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .msg.user .bubble .hint {
+      border-top-color: rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.8);
+    }
+
+    .composer {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+      background: var(--card);
+      border-top: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+    .composer input, .composer textarea {
+      flex: 1;
+      min-height: 44px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-family: inherit;
+      background: var(--bone);
+      color: var(--ink);
+      outline: none;
+      resize: none;
+    }
+    .composer input:focus, .composer textarea:focus {
+      border-color: var(--teal-mid);
+      box-shadow: 0 0 0 3px rgba(15, 92, 86, 0.12);
+    }
+    .composer input::placeholder,
+    .composer textarea::placeholder { color: #8A9A97; }
+    .send-btn {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0 16px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: var(--radius);
+      transition: background 160ms ease;
+      flex-shrink: 0;
+    }
+    .send-btn:hover { background: var(--accent-hover); }
+    .send-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .send-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .task-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .task {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+      text-align: left;
+      width: 100%;
+      cursor: pointer;
+      transition: border-color 140ms ease, box-shadow 140ms ease;
+    }
+    .task:hover {
+      border-color: var(--teal-mid);
+      box-shadow: 0 1px 2px rgba(10, 36, 34, 0.04), 0 6px 16px rgba(10, 36, 34, 0.06);
+    }
+    .task:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 1px;
+    }
+    .task-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .task-title {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    .task-meta {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .chip {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+    .chip.todo { background: #FBF3DC; color: var(--warn); }
+    .chip.done { background: #E8F5EC; color: var(--ok); }
+    .chip.run { background: var(--teal-soft); color: var(--teal); }
+
+    .task-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 2px;
+    }
+    .task-actions button,
+    .detail-actions button {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 10px;
+      min-height: 36px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
+      background: var(--bone);
+      color: var(--teal);
+      transition: background 140ms ease;
+    }
+    .task-actions button:hover,
+    .detail-actions button:hover { background: var(--teal-soft); }
+    .task-actions button.primary,
+    .detail-actions button.primary {
+      background: var(--teal);
+      color: #fff;
+      border-color: var(--teal);
+    }
+    .task-actions button.primary:hover,
+    .detail-actions button.primary:hover { background: var(--teal-mid); }
+    .detail-actions button.accent {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .detail-actions button.accent:hover { background: var(--accent-hover); }
+    .task-actions button:disabled,
+    .detail-actions button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .agent-note {
+      margin: 0 14px 12px;
+      padding: 10px 12px;
+      background: var(--teal-soft);
+      border-radius: var(--radius);
+      font-size: 12px;
+      color: var(--teal);
+      line-height: 1.5;
+      flex-shrink: 0;
+    }
+
+    .studio-foot {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      padding: 6px 12px 10px;
+      flex-shrink: 0;
+    }
+
+    /* Sales detail view */
+    .sales-views { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    .sales-view { display: none; flex-direction: column; flex: 1; min-height: 0; }
+    .sales-view.active { display: flex; }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--teal);
+      min-height: 36px;
+      padding: 4px 0;
+      margin-right: 8px;
+    }
+    .back-btn:hover { color: var(--teal-mid); }
+
+    .detail-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .detail-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+    .detail-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+    .detail-grid {
+      display: grid;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .detail-grid dt {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .detail-grid dd { color: var(--ink); margin: 0; }
+
+    .suggest-box {
+      background: var(--teal-soft);
+      border: 1px solid #C5DED9;
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+    .suggest-box .label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--teal);
+      margin-bottom: 6px;
+      letter-spacing: 0.03em;
+    }
+    .suggest-box .text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink);
+      white-space: pre-wrap;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .timeline-item {
+      font-size: 12px;
+      color: var(--muted);
+      padding-left: 12px;
+      border-left: 2px solid var(--line);
+    }
+    .timeline-item strong { color: var(--ink); font-weight: 500; }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--ink);
+      color: var(--bone);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 16px;
+      border-radius: var(--radius);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 200ms ease, opacity 200ms ease;
+      z-index: 50;
+      max-width: 90vw;
+      text-align: center;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .empty-hint {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 32px 16px;
+    }
+
+    @media (min-width: 768px) {
+      .sidenav { display: flex; }
+      .tabs { display: none; }
+      .chat-scroll, .task-list, .detail-scroll { padding: 20px 24px; }
+      .panel-head { padding: 14px 24px; }
+      .composer { padding: 12px 24px 16px; }
+      .agent-note { margin: 0 24px 14px; }
+      .msg { max-width: 70%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav-btn, .tab, .send-btn, .task-actions button,
+      .detail-actions button, .task, .toast {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="topbar-left">
+        <svg class="topbar-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="#1A7A72"/>
+          <path d="M8 22 L16 8 L20 14 L24 10" fill="none" stroke="#F6F3ED"
+                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="24" cy="10" r="2" fill="#C45C26"/>
+        </svg>
+        <div class="topbar-title">智光跟进助手<span>演示</span></div>
+      </div>
+      <div class="badge-accept" title="交付承诺">两周验收</div>
+    </header>
+
+    <div class="shell">
+      <nav class="sidenav" aria-label="场景">
+        <div class="sidenav-label">智能体场景</div>
+        <button type="button" class="nav-btn" data-panel="sales" aria-selected="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          销售跟进
+        </button>
+        <button type="button" class="nav-btn" data-panel="cs" aria-selected="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          客服接待
+        </button>
+        <button type="button" class="nav-btn" data-panel="flow" aria-selected="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          内部流程
+        </button>
+      </nav>
+
+      <div class="main">
+        <div class="tabs" role="tablist" aria-label="场景切换">
+          <button type="button" class="tab" role="tab" data-panel="sales" aria-selected="true">销售跟进</button>
+          <button type="button" class="tab" role="tab" data-panel="cs" aria-selected="false">客服接待</button>
+          <button type="button" class="tab" role="tab" data-panel="flow" aria-selected="false">内部流程</button>
+        </div>
+
+        <!-- 销售跟进（默认） -->
+        <section class="panel active" id="panel-sales" role="tabpanel" aria-label="销售跟进">
+          <div class="sales-views">
+            <!-- 列表 -->
+            <div class="sales-view active" id="sales-list-view">
+              <div class="panel-head">
+                <h2>销售跟进台</h2>
+                <span class="status-pill warn" id="sales-pending-pill">3 条待跟进</span>
+              </div>
+              <p class="agent-note">点击线索进入详情 → 查看建议话术 → 标记完成。智能体按阶段提醒回访，销售确认后一键处理。</p>
+              <div class="task-list" id="sales-list" aria-label="跟进列表"></div>
+              <p class="studio-foot">智光工作室 · 演示数据，非真实客户</p>
+            </div>
+
+            <!-- 详情 -->
+            <div class="sales-view" id="sales-detail-view" hidden>
+              <div class="panel-head">
+                <div style="display:flex;align-items:center;min-width:0;">
+                  <button type="button" class="back-btn" id="sales-back" aria-label="返回列表">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    返回
+                  </button>
+                  <h2 id="detail-title">线索详情</h2>
+                </div>
+                <span class="chip todo" id="detail-chip">待回访</span>
+              </div>
+              <div class="detail-scroll">
+                <div class="detail-card">
+                  <h3 id="detail-name">—</h3>
+                  <dl class="detail-grid">
+                    <div>
+                      <dt>阶段</dt>
+                      <dd id="detail-stage">—</dd>
+                    </div>
+                    <div>
+                      <dt>上次沟通</dt>
+                      <dd id="detail-last">—</dd>
+                    </div>
+                    <div>
+                      <dt>来源 / 备注</dt>
+                      <dd id="detail-note">—</dd>
+                    </div>
+                  </dl>
+                </div>
+
+                <div class="suggest-box" id="suggest-box">
+                  <div class="label">智能体建议话术</div>
+                  <div class="text" id="detail-suggest">—</div>
+                </div>
+
+                <div class="detail-card">
+                  <div class="label" style="font-size:11px;font-weight:600;color:var(--muted);">操作留痕</div>
+                  <div class="timeline" id="detail-timeline"></div>
+                </div>
+
+                <div class="detail-actions" id="detail-actions" style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <button type="button" class="primary" id="btn-use-draft">采用草稿</button>
+                  <button type="button" class="accent" id="btn-mark-done">标记完成</button>
+                  <button type="button" id="btn-snooze">稍后提醒</button>
+                </div>
+              </div>
+              <form class="composer" id="sales-composer" autocomplete="off">
+                <textarea id="sales-reply" rows="2" placeholder="确认或改写话术后发送（演示）…" aria-label="跟进回复"></textarea>
+                <button type="submit" class="send-btn" id="btn-send-reply">发送</button>
+              </form>
+              <p class="studio-foot">智光工作室 · 演示数据，非真实客户</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 客服接待 -->
+        <section class="panel" id="panel-cs" role="tabpanel" aria-label="客服接待" hidden>
+          <div class="panel-head">
+            <h2>客服智能体</h2>
+            <span class="status-pill">在线 · 已应答 12</span>
+          </div>
+          <div class="chat-scroll" id="cs-chat">
+            <div class="msg agent">
+              <div class="msg-meta">智能体 · 刚刚</div>
+              <div class="bubble">您好，我是门店客服助手。可以查营业时间、预约到店，或转人工处理售后。</div>
+            </div>
+            <div class="msg user">
+              <div class="msg-meta">访客</div>
+              <div class="bubble">周六几点开门？能预约理发吗？</div>
+            </div>
+            <div class="msg agent">
+              <div class="msg-meta">智能体 · 刚刚</div>
+              <div class="bubble">
+                周六营业 10:00–20:00。理发可预约，目前下午 14:30、16:00 有空档。
+                <span class="hint">已同步门店排班 · 复杂售后将转人工</span>
+              </div>
+            </div>
+          </div>
+          <form class="composer" id="cs-form" autocomplete="off">
+            <input type="text" id="cs-input" placeholder="输入客户消息试一试…" aria-label="客户消息" />
+            <button type="submit" class="send-btn">发送</button>
+          </form>
+        </section>
+
+        <!-- 内部流程 -->
+        <section class="panel" id="panel-flow" role="tabpanel" aria-label="内部流程" hidden>
+          <div class="panel-head">
+            <h2>流程自动化</h2>
+            <span class="status-pill">今日 5 单已跑通</span>
+          </div>
+          <p class="agent-note">报备、审批、归档由智能体串联；异常项才需要人工介入。</p>
+          <div class="task-list">
+            <article class="task" style="cursor:default;" tabindex="-1">
+              <div class="task-row">
+                <div>
+                  <div class="task-title">采购报备 · 办公耗材</div>
+                  <div class="task-meta">申请人：小周 · 金额 ¥860</div>
+                </div>
+                <span class="chip run">审批中</span>
+              </div>
+              <div class="task-meta">已校验预算科目，待店长确认。</div>
+              <div class="task-actions">
+                <button type="button" class="primary" data-action="approve">模拟通过</button>
+                <button type="button" data-action="reject">退回修改</button>
+              </div>
+            </article>
+            <article class="task" style="cursor:default;" tabindex="-1">
+              <div class="task-row">
+                <div>
+                  <div class="task-title">合同归档 · 季度服务协议</div>
+                  <div class="task-meta">客户：邻里便利 · PDF 已上传</div>
+                </div>
+                <span class="chip done">已归档</span>
+              </div>
+              <div class="task-meta">智能体已命名、打标签并写入共享盘。</div>
+            </article>
+            <article class="task" style="cursor:default;" tabindex="-1">
+              <div class="task-row">
+                <div>
+                  <div class="task-title">排班变更同步</div>
+                  <div class="task-meta">触发：店员请假 · 目标：客服排班表</div>
+                </div>
+                <span class="chip todo">待确认</span>
+              </div>
+              <div class="task-meta">已生成替班建议，请店长确认后生效。</div>
+              <div class="task-actions">
+                <button type="button" class="primary" data-action="confirm">确认生效</button>
+              </div>
+            </article>
+          </div>
+          <p class="studio-foot">智光工作室 · 演示数据，非真实业务</p>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      /* ---------- 演示数据（虚构） ---------- */
+      var leads = [
+        {
+          id: "L1",
+          name: "林先生 · 意向套餐 B",
+          stage: "报价中",
+          last: "2 天前",
+          note: "微信询价 · 关注周末到店体验",
+          status: "todo",
+          statusLabel: "待回访",
+          suggest: "林先生您好，上次给您的套餐 B 报价还在有效期内。本周若方便到店，我帮您预留周六 14:30 或 16:00 体验档，确认后我发预约链接。",
+          timeline: [
+            { t: "今天 09:12", text: "智能体：到期提醒已生成" },
+            { t: "2 天前", text: "销售：发送报价单 PDF" },
+            { t: "4 天前", text: "线索入库 · 来源微信" }
+          ]
+        },
+        {
+          id: "L2",
+          name: "赵姐 · 老客复购",
+          stage: "续费",
+          last: "昨天",
+          note: "会员到期 5 天后 · 偏好晚间联系",
+          status: "run",
+          statusLabel: "进行中",
+          suggest: "赵姐，您的会员还有 5 天到期。本月续费可享老客延期礼，需要我发一版对比说明（年卡/季卡）吗？今晚 19:00 前回复即可。",
+          timeline: [
+            { t: "昨天 18:40", text: "已发续费提醒，等待回复" },
+            { t: "上周", text: "到店消费 · 护理套餐" }
+          ]
+        },
+        {
+          id: "L3",
+          name: "陈工 · 企业团购询价",
+          stage: "初筛",
+          last: "5 天前",
+          note: "线索来源：微信 · 约 30 人团购",
+          status: "done",
+          statusLabel: "已完成",
+          suggest: "陈工您好，团购方案已按 30 人档整理好，含发票与上门排期说明。方便的话本周约 15 分钟过一下明细。",
+          timeline: [
+            { t: "3 天前", text: "已记录需求并转交销售负责人" },
+            { t: "5 天前", text: "线索入库" }
+          ]
+        }
+      ];
+
+      var currentId = null;
+
+      var panels = {
+        sales: document.getElementById("panel-sales"),
+        cs: document.getElementById("panel-cs"),
+        flow: document.getElementById("panel-flow")
+      };
+      var navBtns = document.querySelectorAll(".nav-btn");
+      var tabs = document.querySelectorAll(".tab");
+      var listEl = document.getElementById("sales-list");
+      var listView = document.getElementById("sales-list-view");
+      var detailView = document.getElementById("sales-detail-view");
+      var pendingPill = document.getElementById("sales-pending-pill");
+      var toastEl = document.getElementById("toast");
+
+      function showToast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add("show");
+        window.clearTimeout(showToast._t);
+        showToast._t = window.setTimeout(function () {
+          toastEl.classList.remove("show");
+        }, 2200);
+      }
+
+      function countPending() {
+        return leads.filter(function (l) {
+          return l.status === "todo" || l.status === "run";
+        }).length;
+      }
+
+      function updatePendingPill() {
+        var n = countPending();
+        pendingPill.textContent = n + " 条待跟进";
+        pendingPill.className = "status-pill" + (n > 0 ? " warn" : "");
+      }
+
+      function chipClass(status) {
+        if (status === "done") return "chip done";
+        if (status === "run") return "chip run";
+        return "chip todo";
+      }
+
+      function renderList() {
+        listEl.innerHTML = "";
+        if (!leads.length) {
+          listEl.innerHTML = '<p class="empty-hint">暂无线索</p>';
+          return;
+        }
+        leads.forEach(function (lead) {
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "task";
+          btn.setAttribute("data-id", lead.id);
+          btn.setAttribute("aria-label", "打开线索 " + lead.name);
+          btn.innerHTML =
+            '<div class="task-row">' +
+              '<div>' +
+                '<div class="task-title"></div>' +
+                '<div class="task-meta"></div>' +
+              '</div>' +
+              '<span class="' + chipClass(lead.status) + '"></span>' +
+            '</div>' +
+            '<div class="task-meta suggest-preview"></div>';
+          btn.querySelector(".task-title").textContent = lead.name;
+          btn.querySelector(".task-meta").textContent =
+            "上次沟通 " + lead.last + " · 阶段：" + lead.stage;
+          btn.querySelector("span.chip").textContent = lead.statusLabel;
+          btn.querySelector(".suggest-preview").textContent =
+            lead.status === "done"
+              ? "已跟进完成 · 点击可查看留痕"
+              : "建议：" + lead.suggest.slice(0, 42) + "…";
+          btn.addEventListener("click", function () {
+            openDetail(lead.id);
+          });
+          listEl.appendChild(btn);
+        });
+        updatePendingPill();
+      }
+
+      function findLead(id) {
+        for (var i = 0; i < leads.length; i++) {
+          if (leads[i].id === id) return leads[i];
+        }
+        return null;
+      }
+
+      function showSalesView(which) {
+        if (which === "detail") {
+          listView.classList.remove("active");
+          listView.setAttribute("hidden", "");
+          detailView.classList.add("active");
+          detailView.removeAttribute("hidden");
+        } else {
+          detailView.classList.remove("active");
+          detailView.setAttribute("hidden", "");
+          listView.classList.add("active");
+          listView.removeAttribute("hidden");
+        }
+      }
+
+      function openDetail(id) {
+        var lead = findLead(id);
+        if (!lead) return;
+        currentId = id;
+        document.getElementById("detail-title").textContent = "线索详情";
+        document.getElementById("detail-name").textContent = lead.name;
+        document.getElementById("detail-stage").textContent = lead.stage;
+        document.getElementById("detail-last").textContent = lead.last;
+        document.getElementById("detail-note").textContent = lead.note;
+        document.getElementById("detail-suggest").textContent = lead.suggest;
+        var chip = document.getElementById("detail-chip");
+        chip.className = chipClass(lead.status);
+        chip.textContent = lead.statusLabel;
+
+        var tl = document.getElementById("detail-timeline");
+        tl.innerHTML = "";
+        lead.timeline.forEach(function (item) {
+          var div = document.createElement("div");
+          div.className = "timeline-item";
+          div.innerHTML = "<strong></strong> · <span></span>";
+          div.querySelector("strong").textContent = item.t;
+          div.querySelector("span").textContent = item.text;
+          tl.appendChild(div);
+        });
+
+        document.getElementById("sales-reply").value = "";
+        var done = lead.status === "done";
+        document.getElementById("btn-mark-done").disabled = done;
+        document.getElementById("btn-use-draft").disabled = done;
+        document.getElementById("btn-send-reply").disabled = done;
+        document.getElementById("btn-snooze").disabled = done;
+        document.getElementById("sales-reply").disabled = done;
+
+        showSalesView("detail");
+      }
+
+      function addTimeline(lead, text) {
+        var now = new Date();
+        var hh = String(now.getHours()).padStart(2, "0");
+        var mm = String(now.getMinutes()).padStart(2, "0");
+        lead.timeline.unshift({ t: "刚刚 " + hh + ":" + mm, text: text });
+      }
+
+      document.getElementById("sales-back").addEventListener("click", function () {
+        currentId = null;
+        showSalesView("list");
+        renderList();
+      });
+
+      document.getElementById("btn-use-draft").addEventListener("click", function () {
+        var lead = findLead(currentId);
+        if (!lead || lead.status === "done") return;
+        document.getElementById("sales-reply").value = lead.suggest;
+        document.getElementById("sales-reply").focus();
+        showToast("已填入建议话术，可改写后发送");
+      });
+
+      document.getElementById("btn-mark-done").addEventListener("click", function () {
+        var lead = findLead(currentId);
+        if (!lead || lead.status === "done") return;
+        lead.status = "done";
+        lead.statusLabel = "已完成";
+        addTimeline(lead, "销售：标记跟进完成");
+        openDetail(lead.id);
+        showToast("已标记完成 · 状态已写回");
+      });
+
+      document.getElementById("btn-snooze").addEventListener("click", function () {
+        var lead = findLead(currentId);
+        if (!lead || lead.status === "done") return;
+        addTimeline(lead, "销售：稍后提醒（演示）");
+        openDetail(lead.id);
+        showToast("已设置稍后提醒（演示）");
+      });
+
+      document.getElementById("sales-composer").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var lead = findLead(currentId);
+        if (!lead || lead.status === "done") return;
+        var text = (document.getElementById("sales-reply").value || "").trim();
+        if (!text) {
+          showToast("请先填写或采用话术草稿");
+          return;
+        }
+        addTimeline(lead, "销售：已发送跟进（演示）「" + text.slice(0, 28) + (text.length > 28 ? "…" : "") + "」");
+        if (lead.status === "todo") {
+          lead.status = "run";
+          lead.statusLabel = "进行中";
+        }
+        document.getElementById("sales-reply").value = "";
+        openDetail(lead.id);
+        showToast("演示发送成功 · 已写入留痕");
+      });
+
+      function switchPanel(id) {
+        Object.keys(panels).forEach(function (key) {
+          var el = panels[key];
+          var on = key === id;
+          el.classList.toggle("active", on);
+          if (on) el.removeAttribute("hidden");
+          else el.setAttribute("hidden", "");
+        });
+        navBtns.forEach(function (btn) {
+          btn.setAttribute("aria-selected", btn.getAttribute("data-panel") === id ? "true" : "false");
+        });
+        tabs.forEach(function (btn) {
+          btn.setAttribute("aria-selected", btn.getAttribute("data-panel") === id ? "true" : "false");
+        });
+        if (id === "sales") {
+          showSalesView("list");
+          renderList();
+        }
+      }
+
+      function bindSwitch(nodes) {
+        nodes.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            switchPanel(btn.getAttribute("data-panel"));
+          });
+        });
+      }
+      bindSwitch(navBtns);
+      bindSwitch(tabs);
+
+      /* 客服 mock */
+      var form = document.getElementById("cs-form");
+      var input = document.getElementById("cs-input");
+      var chat = document.getElementById("cs-chat");
+      var replies = [
+        "已记录。若需改约，直接说期望时间段即可。",
+        "好的。高峰时段建议提前预约，我可以帮您占位。",
+        "这个问题我先按知识库答复；若涉及退款，将为您转人工。"
+      ];
+      var replyIdx = 0;
+
+      function addMsg(role, text, hint) {
+        var wrap = document.createElement("div");
+        wrap.className = "msg " + role;
+        var meta = document.createElement("div");
+        meta.className = "msg-meta";
+        meta.textContent = role === "user" ? "访客" : "智能体 · 刚刚";
+        var bubble = document.createElement("div");
+        bubble.className = "bubble";
+        bubble.appendChild(document.createTextNode(text));
+        if (hint) {
+          var h = document.createElement("span");
+          h.className = "hint";
+          h.textContent = hint;
+          bubble.appendChild(h);
+        }
+        wrap.appendChild(meta);
+        wrap.appendChild(bubble);
+        chat.appendChild(wrap);
+        chat.scrollTop = chat.scrollHeight;
+      }
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var text = (input.value || "").trim();
+        if (!text) return;
+        addMsg("user", text);
+        input.value = "";
+        var reply = replies[replyIdx % replies.length];
+        replyIdx += 1;
+        window.setTimeout(function () {
+          addMsg("agent", reply, "演示回复 · 正式环境将接入门店知识库");
+        }, 420);
+      });
+
+      /* 流程按钮反馈 */
+      document.querySelectorAll("#panel-flow .task-actions button").forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          var label = btn.textContent;
+          btn.textContent = "已处理";
+          btn.disabled = true;
+          btn.style.opacity = "0.7";
+          window.setTimeout(function () {
+            btn.textContent = label;
+            btn.disabled = false;
+            btn.style.opacity = "";
+          }, 1600);
+        });
+      });
+
+      /* 阻止流程 task 被当成可点卡片 */
+      document.querySelectorAll("#panel-flow .task").forEach(function (el) {
+        el.addEventListener("click", function (e) {
+          if (e.target.closest("button")) return;
+          e.preventDefault();
+        });
+      });
+
+      renderList();
+    })();
+  </script>
+</body>
+</html>
