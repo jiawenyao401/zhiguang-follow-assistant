@@ -563,6 +563,43 @@
       padding: 32px 16px;
     }
 
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(246, 243, 237, 0.1);
+      border: 1px solid rgba(184, 217, 212, 0.35);
+      border-radius: 999px;
+      padding: 2px;
+    }
+    .lang-toggle button {
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 8px;
+      min-height: 28px;
+      border: none;
+      background: transparent;
+      color: var(--bar-muted);
+      border-radius: 999px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .lang-toggle button[aria-pressed="true"] {
+      background: rgba(230, 242, 240, 0.22);
+      color: #F6F3ED;
+    }
+    .lang-toggle button:focus-visible {
+      outline: 2px solid #5CB8A8;
+      outline-offset: 1px;
+    }
+
     @media (min-width: 768px) {
       .sidenav { display: flex; }
       .tabs { display: none; }
@@ -591,14 +628,20 @@
                 stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
           <circle cx="24" cy="10" r="2" fill="#C45C26"/>
         </svg>
-        <div class="topbar-title">智光跟进助手<span>演示</span></div>
+        <div class="topbar-title"><span data-i18n="appName">智光跟进助手</span><span data-i18n="appDemo">演示</span></div>
       </div>
-      <div class="badge-accept" title="交付承诺">两周验收</div>
+      <div class="topbar-right">
+        <div class="lang-toggle" role="group" aria-label="Language">
+          <button type="button" data-lang="zh" aria-pressed="true">CN</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+        <div class="badge-accept" data-i18n="badgeAccept" data-i18n-title="badgeAcceptTitle" title="交付承诺">两周验收</div>
+      </div>
     </header>
 
     <div class="shell">
       <nav class="sidenav" aria-label="场景">
-        <div class="sidenav-label">智能体场景</div>
+        <div class="sidenav-label" data-i18n="navLabel">智能体场景</div>
         <button type="button" class="nav-btn" data-panel="sales" aria-selected="true">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -606,27 +649,27 @@
             <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
             <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
           </svg>
-          销售跟进
+          <span data-i18n="navSales">销售跟进</span>
         </button>
         <button type="button" class="nav-btn" data-panel="cs" aria-selected="false">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
           </svg>
-          客服接待
+          <span data-i18n="navCs">客服接待</span>
         </button>
         <button type="button" class="nav-btn" data-panel="flow" aria-selected="false">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
           </svg>
-          内部流程
+          <span data-i18n="navFlow">内部流程</span>
         </button>
       </nav>
 
       <div class="main">
         <div class="tabs" role="tablist" aria-label="场景切换">
-          <button type="button" class="tab" role="tab" data-panel="sales" aria-selected="true">销售跟进</button>
-          <button type="button" class="tab" role="tab" data-panel="cs" aria-selected="false">客服接待</button>
-          <button type="button" class="tab" role="tab" data-panel="flow" aria-selected="false">内部流程</button>
+          <button type="button" class="tab" role="tab" data-panel="sales" aria-selected="true" data-i18n="navSales">销售跟进</button>
+          <button type="button" class="tab" role="tab" data-panel="cs" aria-selected="false" data-i18n="navCs">客服接待</button>
+          <button type="button" class="tab" role="tab" data-panel="flow" aria-selected="false" data-i18n="navFlow">内部流程</button>
         </div>
 
         <!-- 销售跟进（默认） -->
@@ -635,12 +678,12 @@
             <!-- 列表 -->
             <div class="sales-view active" id="sales-list-view">
               <div class="panel-head">
-                <h2>销售跟进台</h2>
+                <h2 data-i18n="salesDesk">销售跟进台</h2>
                 <span class="status-pill warn" id="sales-pending-pill">3 条待跟进</span>
               </div>
-              <p class="agent-note">点击线索进入详情 → 查看建议话术 → 标记完成。智能体按阶段提醒回访，销售确认后一键处理。</p>
+              <p class="agent-note" data-i18n="salesNote">点击线索进入详情 → 查看建议话术 → 标记完成。智能体按阶段提醒回访，销售确认后一键处理。</p>
               <div class="task-list" id="sales-list" aria-label="跟进列表"></div>
-              <p class="studio-foot">智光工作室 · 演示数据，非真实客户</p>
+              <p class="studio-foot" data-i18n="footDemo">智光工作室 · 演示数据，非真实客户</p>
             </div>
 
             <!-- 详情 -->
@@ -651,9 +694,9 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <polyline points="15 18 9 12 15 6"/>
                     </svg>
-                    返回
+                    <span data-i18n="back">返回</span>
                   </button>
-                  <h2 id="detail-title">线索详情</h2>
+                  <h2 id="detail-title" data-i18n="leadDetail">线索详情</h2>
                 </div>
                 <span class="chip todo" id="detail-chip">待回访</span>
               </div>
@@ -662,41 +705,41 @@
                   <h3 id="detail-name">—</h3>
                   <dl class="detail-grid">
                     <div>
-                      <dt>阶段</dt>
+<dt data-i18n="dtStage">阶段</dt>
                       <dd id="detail-stage">—</dd>
                     </div>
                     <div>
-                      <dt>上次沟通</dt>
+<dt data-i18n="dtLast">上次沟通</dt>
                       <dd id="detail-last">—</dd>
                     </div>
                     <div>
-                      <dt>来源 / 备注</dt>
+<dt data-i18n="dtNote">来源 / 备注</dt>
                       <dd id="detail-note">—</dd>
                     </div>
                   </dl>
                 </div>
 
                 <div class="suggest-box" id="suggest-box">
-                  <div class="label">智能体建议话术</div>
+                  <div class="label" data-i18n="suggestLabel">智能体建议话术</div>
                   <div class="text" id="detail-suggest">—</div>
                 </div>
 
                 <div class="detail-card">
-                  <div class="label" style="font-size:11px;font-weight:600;color:var(--muted);">操作留痕</div>
+                  <div class="label" style="font-size:11px;font-weight:600;color:var(--muted);" data-i18n="timelineLabel">操作留痕</div>
                   <div class="timeline" id="detail-timeline"></div>
                 </div>
 
                 <div class="detail-actions" id="detail-actions" style="display:flex;flex-wrap:wrap;gap:8px;">
-                  <button type="button" class="primary" id="btn-use-draft">采用草稿</button>
-                  <button type="button" class="accent" id="btn-mark-done">标记完成</button>
-                  <button type="button" id="btn-snooze">稍后提醒</button>
+                  <button type="button" class="primary" id="btn-use-draft" data-i18n="btnUseDraft">采用草稿</button>
+                  <button type="button" class="accent" id="btn-mark-done" data-i18n="btnMarkDone">标记完成</button>
+                  <button type="button" id="btn-snooze" data-i18n="btnSnooze">稍后提醒</button>
                 </div>
               </div>
               <form class="composer" id="sales-composer" autocomplete="off">
-                <textarea id="sales-reply" rows="2" placeholder="确认或改写话术后发送（演示）…" aria-label="跟进回复"></textarea>
-                <button type="submit" class="send-btn" id="btn-send-reply">发送</button>
+                <textarea id="sales-reply" rows="2" placeholder="确认或改写话术后发送（演示）…" data-i18n-placeholder="replyPh" aria-label="跟进回复"></textarea>
+                <button type="submit" class="send-btn" id="btn-send-reply" data-i18n="btnSend">发送</button>
               </form>
-              <p class="studio-foot">智光工作室 · 演示数据，非真实客户</p>
+              <p class="studio-foot" data-i18n="footDemo">智光工作室 · 演示数据，非真实客户</p>
             </div>
           </div>
         </section>
@@ -704,79 +747,79 @@
         <!-- 客服接待 -->
         <section class="panel" id="panel-cs" role="tabpanel" aria-label="客服接待" hidden>
           <div class="panel-head">
-            <h2>客服智能体</h2>
-            <span class="status-pill">在线 · 已应答 12</span>
+<h2 data-i18n="csTitle">客服智能体</h2>
+<span class="status-pill" data-i18n="csStatus">在线 · 已应答 12</span>
           </div>
           <div class="chat-scroll" id="cs-chat">
             <div class="msg agent">
-              <div class="msg-meta">智能体 · 刚刚</div>
-              <div class="bubble">您好，我是门店客服助手。可以查营业时间、预约到店，或转人工处理售后。</div>
+              <div class="msg-meta" data-i18n="agentJust">智能体 · 刚刚</div>
+              <div class="bubble" data-i18n="csMsg1">您好，我是门店客服助手。可以查营业时间、预约到店，或转人工处理售后。</div>
             </div>
             <div class="msg user">
-              <div class="msg-meta">访客</div>
-              <div class="bubble">周六几点开门？能预约理发吗？</div>
+              <div class="msg-meta" data-i18n="visitor">访客</div>
+              <div class="bubble" data-i18n="csMsg2">周六几点开门？能预约理发吗？</div>
             </div>
             <div class="msg agent">
-              <div class="msg-meta">智能体 · 刚刚</div>
+              <div class="msg-meta" data-i18n="agentJust">智能体 · 刚刚</div>
               <div class="bubble">
-                周六营业 10:00–20:00。理发可预约，目前下午 14:30、16:00 有空档。
-                <span class="hint">已同步门店排班 · 复杂售后将转人工</span>
+                <span data-i18n="csMsg3">周六营业 10:00–20:00。理发可预约，目前下午 14:30、16:00 有空档。</span>
+                <span class="hint" data-i18n="csHint3">已同步门店排班 · 复杂售后将转人工</span>
               </div>
             </div>
           </div>
           <form class="composer" id="cs-form" autocomplete="off">
-            <input type="text" id="cs-input" placeholder="输入客户消息试一试…" aria-label="客户消息" />
-            <button type="submit" class="send-btn">发送</button>
+            <input type="text" id="cs-input" placeholder="输入客户消息试一试…" aria-label="客户消息" data-i18n-placeholder="csPh" data-i18n-aria="csAria" />
+            <button type="submit" class="send-btn" data-i18n="btnSend">发送</button>
           </form>
         </section>
 
         <!-- 内部流程 -->
         <section class="panel" id="panel-flow" role="tabpanel" aria-label="内部流程" hidden>
           <div class="panel-head">
-            <h2>流程自动化</h2>
-            <span class="status-pill">今日 5 单已跑通</span>
+<h2 data-i18n="flowTitle">流程自动化</h2>
+<span class="status-pill" data-i18n="flowStatus">今日 5 单已跑通</span>
           </div>
-          <p class="agent-note">报备、审批、归档由智能体串联；异常项才需要人工介入。</p>
+<p class="agent-note" data-i18n="flowNote">报备、审批、归档由智能体串联；异常项才需要人工介入。</p>
           <div class="task-list">
             <article class="task" style="cursor:default;" tabindex="-1">
               <div class="task-row">
                 <div>
-                  <div class="task-title">采购报备 · 办公耗材</div>
-                  <div class="task-meta">申请人：小周 · 金额 ¥860</div>
+<div class="task-title" data-i18n="flowT1">采购报备 · 办公耗材</div>
+<div class="task-meta" data-i18n="flowT1m">申请人：小周 · 金额 ¥860</div>
                 </div>
-                <span class="chip run">审批中</span>
+<span class="chip run" data-i18n="chipApproving">审批中</span>
               </div>
-              <div class="task-meta">已校验预算科目，待店长确认。</div>
+<div class="task-meta" data-i18n="flowT1d">已校验预算科目，待店长确认。</div>
               <div class="task-actions">
-                <button type="button" class="primary" data-action="approve">模拟通过</button>
-                <button type="button" data-action="reject">退回修改</button>
+<button type="button" class="primary" data-action="approve" data-i18n="btnApprove">模拟通过</button>
+<button type="button" data-action="reject" data-i18n="btnReject">退回修改</button>
               </div>
             </article>
             <article class="task" style="cursor:default;" tabindex="-1">
               <div class="task-row">
                 <div>
-                  <div class="task-title">合同归档 · 季度服务协议</div>
-                  <div class="task-meta">客户：邻里便利 · PDF 已上传</div>
+<div class="task-title" data-i18n="flowT2">合同归档 · 季度服务协议</div>
+<div class="task-meta" data-i18n="flowT2m">客户：邻里便利 · PDF 已上传</div>
                 </div>
-                <span class="chip done">已归档</span>
+<span class="chip done" data-i18n="chipArchived">已归档</span>
               </div>
-              <div class="task-meta">智能体已命名、打标签并写入共享盘。</div>
+<div class="task-meta" data-i18n="flowT2d">智能体已命名、打标签并写入共享盘。</div>
             </article>
             <article class="task" style="cursor:default;" tabindex="-1">
               <div class="task-row">
                 <div>
-                  <div class="task-title">排班变更同步</div>
-                  <div class="task-meta">触发：店员请假 · 目标：客服排班表</div>
+<div class="task-title" data-i18n="flowT3">排班变更同步</div>
+<div class="task-meta" data-i18n="flowT3m">触发：店员请假 · 目标：客服排班表</div>
                 </div>
-                <span class="chip todo">待确认</span>
+<span class="chip todo" data-i18n="chipConfirm">待确认</span>
               </div>
-              <div class="task-meta">已生成替班建议，请店长确认后生效。</div>
+<div class="task-meta" data-i18n="flowT3d">已生成替班建议，请店长确认后生效。</div>
               <div class="task-actions">
-                <button type="button" class="primary" data-action="confirm">确认生效</button>
+<button type="button" class="primary" data-action="confirm" data-i18n="btnConfirm">确认生效</button>
               </div>
             </article>
           </div>
-          <p class="studio-foot">智光工作室 · 演示数据，非真实业务</p>
+<p class="studio-foot" data-i18n="footBiz">智光工作室 · 演示数据，非真实业务</p>
         </section>
       </div>
     </div>
@@ -786,55 +829,257 @@
 
   <script>
     (function () {
-      /* ---------- 演示数据（虚构） ---------- */
-      var leads = [
-        {
-          id: "L1",
-          name: "林先生 · 意向套餐 B",
-          stage: "报价中",
-          last: "2 天前",
-          note: "微信询价 · 关注周末到店体验",
-          status: "todo",
-          statusLabel: "待回访",
-          suggest: "林先生您好，上次给您的套餐 B 报价还在有效期内。本周若方便到店，我帮您预留周六 14:30 或 16:00 体验档，确认后我发预约链接。",
-          timeline: [
-            { t: "今天 09:12", text: "智能体：到期提醒已生成" },
-            { t: "2 天前", text: "销售：发送报价单 PDF" },
-            { t: "4 天前", text: "线索入库 · 来源微信" }
+      var LANG_KEY = "zg-lang";
+      var lang = "zh";
+      try { lang = localStorage.getItem(LANG_KEY) || "zh"; } catch (e) {}
+      if (lang !== "en" && lang !== "zh") lang = "zh";
+
+      var I18N = {
+        zh: {
+          title: "智光跟进助手 · 销售跟进 Demo",
+          desc: "智光跟进助手演示：销售线索列表、详情、建议话术、标记完成。",
+          appName: "智光跟进助手", appDemo: "演示",
+          badgeAccept: "两周验收", badgeAcceptTitle: "交付承诺",
+          navLabel: "智能体场景", navSales: "销售跟进", navCs: "客服接待", navFlow: "内部流程",
+          salesDesk: "销售跟进台", salesNote: "点击线索进入详情 → 查看建议话术 → 标记完成。智能体按阶段提醒回访，销售确认后一键处理。",
+          footDemo: "智光工作室 · 演示数据，非真实客户",
+          back: "返回", leadDetail: "线索详情",
+          dtStage: "阶段", dtLast: "上次沟通", dtNote: "来源 / 备注",
+          suggestLabel: "智能体建议话术", timelineLabel: "操作留痕",
+          btnUseDraft: "采用草稿", btnMarkDone: "标记完成", btnSnooze: "稍后提醒",
+          replyPh: "确认或改写话术后发送（演示）…", btnSend: "发送",
+          csTitle: "客服智能体", csStatus: "在线 · 已应答 12",
+          agentJust: "智能体 · 刚刚", visitor: "访客",
+          csMsg1: "您好，我是门店客服助手。可以查营业时间、预约到店，或转人工处理售后。",
+          csMsg2: "周六几点开门？能预约理发吗？",
+          csMsg3: "周六营业 10:00–20:00。理发可预约，目前下午 14:30、16:00 有空档。",
+          csHint3: "已同步门店排班 · 复杂售后将转人工",
+          csPh: "输入客户消息试一试…", csAria: "客户消息",
+          flowTitle: "流程自动化", flowStatus: "今日 5 单已跑通",
+          flowNote: "报备、审批、归档由智能体串联；异常项才需要人工介入。",
+          flowT1: "采购报备 · 办公耗材", flowT1m: "申请人：小周 · 金额 ¥860",
+          chipApproving: "审批中", flowT1d: "已校验预算科目，待店长确认。",
+          btnApprove: "模拟通过", btnReject: "退回修改",
+          flowT2: "合同归档 · 季度服务协议", flowT2m: "客户：邻里便利 · PDF 已上传",
+          chipArchived: "已归档", flowT2d: "智能体已命名、打标签并写入共享盘。",
+          flowT3: "排班变更同步", flowT3m: "触发：店员请假 · 目标：客服排班表",
+          chipConfirm: "待确认", flowT3d: "已生成替班建议，请店长确认后生效。",
+          btnConfirm: "确认生效", footBiz: "智光工作室 · 演示数据，非真实业务",
+          pending: function (n) { return n + " 条待跟进"; },
+          emptyLeads: "暂无线索",
+          lastStage: function (last, stage) { return "上次沟通 " + last + " · 阶段：" + stage; },
+          donePreview: "已跟进完成 · 点击可查看留痕",
+          suggestPreview: function (s) { return "建议：" + s.slice(0, 42) + "…"; },
+          openLead: function (name) { return "打开线索 " + name; },
+          justNow: function (hh, mm) { return "刚刚 " + hh + ":" + mm; },
+          toastDraft: "已填入建议话术，可改写后发送",
+          toastDone: "已标记完成 · 状态已写回",
+          toastSnooze: "已设置稍后提醒（演示）",
+          toastNeedDraft: "请先填写或采用话术草稿",
+          toastSent: "演示发送成功 · 已写入留痕",
+          tlMarkDone: "销售：标记跟进完成",
+          tlSnooze: "销售：稍后提醒（演示）",
+          tlSent: function (snip) { return "销售：已发送跟进（演示）「" + snip + "」"; },
+          statusTodo: "待回访", statusRun: "进行中", statusDone: "已完成",
+          processed: "已处理",
+          csReplies: [
+            "已记录。若需改约，直接说期望时间段即可。",
+            "好的。高峰时段建议提前预约，我可以帮您占位。",
+            "这个问题我先按知识库答复；若涉及退款，将为您转人工。"
+          ],
+          csDemoHint: "演示回复 · 正式环境将接入门店知识库",
+          leads: [
+            {
+              id: "L1",
+              name: "林先生 · 意向套餐 B",
+              stage: "报价中",
+              last: "2 天前",
+              note: "微信询价 · 关注周末到店体验",
+              status: "todo",
+              suggest: "林先生您好，上次给您的套餐 B 报价还在有效期内。本周若方便到店，我帮您预留周六 14:30 或 16:00 体验档，确认后我发预约链接。",
+              timeline: [
+                { t: "今天 09:12", text: "智能体：到期提醒已生成" },
+                { t: "2 天前", text: "销售：发送报价单 PDF" },
+                { t: "4 天前", text: "线索入库 · 来源微信" }
+              ]
+            },
+            {
+              id: "L2",
+              name: "赵姐 · 老客复购",
+              stage: "续费",
+              last: "昨天",
+              note: "会员到期 5 天后 · 偏好晚间联系",
+              status: "run",
+              suggest: "赵姐，您的会员还有 5 天到期。本月续费可享老客延期礼，需要我发一版对比说明（年卡/季卡）吗？今晚 19:00 前回复即可。",
+              timeline: [
+                { t: "昨天 18:40", text: "已发续费提醒，等待回复" },
+                { t: "上周", text: "到店消费 · 护理套餐" }
+              ]
+            },
+            {
+              id: "L3",
+              name: "陈工 · 企业团购询价",
+              stage: "初筛",
+              last: "5 天前",
+              note: "线索来源：微信 · 约 30 人团购",
+              status: "done",
+              suggest: "陈工您好，团购方案已按 30 人档整理好，含开票说明与上门排期。方便的话本周约 15 分钟过一下明细。",
+              timeline: [
+                { t: "3 天前", text: "已记录需求并转交销售负责人" },
+                { t: "5 天前", text: "线索入库" }
+              ]
+            }
           ]
         },
-        {
-          id: "L2",
-          name: "赵姐 · 老客复购",
-          stage: "续费",
-          last: "昨天",
-          note: "会员到期 5 天后 · 偏好晚间联系",
-          status: "run",
-          statusLabel: "进行中",
-          suggest: "赵姐，您的会员还有 5 天到期。本月续费可享老客延期礼，需要我发一版对比说明（年卡/季卡）吗？今晚 19:00 前回复即可。",
-          timeline: [
-            { t: "昨天 18:40", text: "已发续费提醒，等待回复" },
-            { t: "上周", text: "到店消费 · 护理套餐" }
-          ]
-        },
-        {
-          id: "L3",
-          name: "陈工 · 企业团购询价",
-          stage: "初筛",
-          last: "5 天前",
-          note: "线索来源：微信 · 约 30 人团购",
-          status: "done",
-          statusLabel: "已完成",
-          suggest: "陈工您好，团购方案已按 30 人档整理好，含发票与上门排期说明。方便的话本周约 15 分钟过一下明细。",
-          timeline: [
-            { t: "3 天前", text: "已记录需求并转交销售负责人" },
-            { t: "5 天前", text: "线索入库" }
+        en: {
+          title: "Zhiguang Follow Assistant · Sales Demo",
+          desc: "Demo: sales lead list, detail, suggested scripts, mark done.",
+          appName: "Zhiguang Follow", appDemo: "Demo",
+          badgeAccept: "2-week accept.", badgeAcceptTitle: "Delivery commitment",
+          navLabel: "Agent scenarios", navSales: "Sales follow-up", navCs: "Reception", navFlow: "Workflows",
+          salesDesk: "Sales desk", salesNote: "Open a lead → review suggested script → mark done. The agent nudges revisits by stage; sales confirms in one tap.",
+          footDemo: "Zhiguang Studio · Demo data, not real customers",
+          back: "Back", leadDetail: "Lead detail",
+          dtStage: "Stage", dtLast: "Last contact", dtNote: "Source / notes",
+          suggestLabel: "Suggested script", timelineLabel: "Activity log",
+          btnUseDraft: "Use draft", btnMarkDone: "Mark done", btnSnooze: "Remind later",
+          replyPh: "Confirm or edit the script, then send (demo)…", btnSend: "Send",
+          csTitle: "Reception agent", csStatus: "Online · 12 answered",
+          agentJust: "Agent · just now", visitor: "Visitor",
+          csMsg1: "Hi — store reception assistant. I can check hours, book a visit, or escalate after-sales.",
+          csMsg2: "What time do you open Saturday? Can I book a haircut?",
+          csMsg3: "Saturday 10:00–20:00. Haircuts bookable — 14:30 and 16:00 still open.",
+          csHint3: "Synced with store roster · complex after-sales escalate",
+          csPh: "Type a customer message…", csAria: "Customer message",
+          flowTitle: "Workflow automation", flowStatus: "5 runs completed today",
+          flowNote: "Filing, approval, and archiving are chained by the agent; humans only handle exceptions.",
+          flowT1: "Purchase filing · office supplies", flowT1m: "Requester: Zhou · CNY 860",
+          chipApproving: "In approval", flowT1d: "Budget line checked; awaiting store manager.",
+          btnApprove: "Simulate approve", btnReject: "Send back",
+          flowT2: "Contract archive · quarterly service", flowT2m: "Client: Neighborhood Mart · PDF uploaded",
+          chipArchived: "Archived", flowT2d: "Named, tagged, and written to shared drive.",
+          flowT3: "Roster change sync", flowT3m: "Trigger: staff leave · Target: CS roster",
+          chipConfirm: "Pending", flowT3d: "Coverage suggestion ready — confirm to apply.",
+          btnConfirm: "Confirm", footBiz: "Zhiguang Studio · Demo data, not real ops",
+          pending: function (n) { return n + " pending"; },
+          emptyLeads: "No leads",
+          lastStage: function (last, stage) { return "Last contact " + last + " · Stage: " + stage; },
+          donePreview: "Done · tap to view log",
+          suggestPreview: function (s) { return "Suggest: " + s.slice(0, 42) + "…"; },
+          openLead: function (name) { return "Open lead " + name; },
+          justNow: function (hh, mm) { return "Just now " + hh + ":" + mm; },
+          toastDraft: "Draft filled — edit then send",
+          toastDone: "Marked done · status saved",
+          toastSnooze: "Remind later set (demo)",
+          toastNeedDraft: "Fill or use the draft first",
+          toastSent: "Demo send OK · logged",
+          tlMarkDone: "Sales: marked follow-up done",
+          tlSnooze: "Sales: remind later (demo)",
+          tlSent: function (snip) { return "Sales: sent follow-up (demo) 「" + snip + "」"; },
+          statusTodo: "Follow up", statusRun: "In progress", statusDone: "Done",
+          processed: "Done",
+          csReplies: [
+            "Noted. To reschedule, just say your preferred window.",
+            "Got it. Peak times book early — I can hold a slot.",
+            "I’ll answer from the knowledge base; refunds escalate to a human."
+          ],
+          csDemoHint: "Demo reply · production ties to store knowledge base",
+          leads: [
+            {
+              id: "L1",
+              name: "Mr. Lin · Package B interest",
+              stage: "Quoting",
+              last: "2 days ago",
+              note: "WeChat inquiry · wants weekend in-store trial",
+              status: "todo",
+              suggest: "Hi Mr. Lin — Package B quote is still valid. If you’re free this week, I can hold Sat 14:30 or 16:00 for a trial; confirm and I’ll send the booking link.",
+              timeline: [
+                { t: "Today 09:12", text: "Agent: expiry reminder created" },
+                { t: "2 days ago", text: "Sales: sent quote PDF" },
+                { t: "4 days ago", text: "Lead in · WeChat" }
+              ]
+            },
+            {
+              id: "L2",
+              name: "Ms. Zhao · renewing member",
+              stage: "Renewal",
+              last: "Yesterday",
+              note: "Membership ends in 5 days · prefers evening contact",
+              status: "run",
+              suggest: "Hi Zhao — membership ends in 5 days. Renew this month for a loyalty extension gift. Want a year vs quarter comparison? Reply before 19:00 tonight.",
+              timeline: [
+                { t: "Yesterday 18:40", text: "Renewal reminder sent, awaiting reply" },
+                { t: "Last week", text: "In-store · care package" }
+              ]
+            },
+            {
+              id: "L3",
+              name: "Eng. Chen · group buy inquiry",
+              stage: "Screening",
+              last: "5 days ago",
+              note: "Source: WeChat · ~30-person group",
+              status: "done",
+              suggest: "Hi Chen — group plan for ~30 is ready, with billing notes and on-site schedule. Free for 15 minutes this week to walk through?",
+              timeline: [
+                { t: "3 days ago", text: "Needs logged; handed to sales owner" },
+                { t: "5 days ago", text: "Lead in" }
+              ]
+            }
           ]
         }
-      ];
+      };
+
+      function t() { return I18N[lang] || I18N.zh; }
+
+      function statusLabel(status) {
+        var d = t();
+        if (status === "done") return d.statusDone;
+        if (status === "run") return d.statusRun;
+        return d.statusTodo;
+      }
+
+      /* Runtime lead state (status/timeline mutate); base copy from I18N */
+      var leads = [];
+      var leadStatus = {}; /* id -> {status, timeline extras} */
+
+      function rebuildLeadsFromLang() {
+        var base = t().leads;
+        leads = base.map(function (L) {
+          var st = leadStatus[L.id];
+          var status = st ? st.status : L.status;
+          var timeline = (st && st.timeline) ? st.timeline.slice() : L.timeline.map(function (x) { return { t: x.t, text: x.text }; });
+          /* If we switched lang mid-session, keep status but use new base timeline + append runtime events marked */
+          if (st && st.runtimeEvents && st.runtimeEvents.length) {
+            var rt = st.runtimeEvents.map(function (ev) {
+              return { t: ev.t, text: ev.text[lang] || ev.text.zh || ev.text.en };
+            });
+            timeline = rt.concat(L.timeline.map(function (x) { return { t: x.t, text: x.text }; }));
+          }
+          return {
+            id: L.id,
+            name: L.name,
+            stage: L.stage,
+            last: L.last,
+            note: L.note,
+            status: status,
+            statusLabel: statusLabel(status),
+            suggest: L.suggest,
+            timeline: timeline
+          };
+        });
+      }
+
+      function ensureStatus(id) {
+        if (!leadStatus[id]) {
+          var L = null;
+          var base = I18N.zh.leads;
+          for (var i = 0; i < base.length; i++) if (base[i].id === id) L = base[i];
+          leadStatus[id] = { status: L ? L.status : "todo", runtimeEvents: [] };
+        }
+        return leadStatus[id];
+      }
 
       var currentId = null;
-
       var panels = {
         sales: document.getElementById("panel-sales"),
         cs: document.getElementById("panel-cs"),
@@ -847,6 +1092,7 @@
       var detailView = document.getElementById("sales-detail-view");
       var pendingPill = document.getElementById("sales-pending-pill");
       var toastEl = document.getElementById("toast");
+      var replyIdx = 0;
 
       function showToast(msg) {
         toastEl.textContent = msg;
@@ -857,6 +1103,34 @@
         }, 2200);
       }
 
+      function applyStaticI18n() {
+        var d = t();
+        document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
+        document.title = d.title;
+        var meta = document.querySelector('meta[name="description"]');
+        if (meta) meta.setAttribute("content", d.desc);
+
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          var k = el.getAttribute("data-i18n");
+          if (typeof d[k] === "string") el.textContent = d[k];
+        });
+        document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+          var k = el.getAttribute("data-i18n-placeholder");
+          if (d[k]) el.setAttribute("placeholder", d[k]);
+        });
+        document.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
+          var k = el.getAttribute("data-i18n-aria");
+          if (d[k]) el.setAttribute("aria-label", d[k]);
+        });
+        document.querySelectorAll("[data-i18n-title]").forEach(function (el) {
+          var k = el.getAttribute("data-i18n-title");
+          if (d[k]) el.setAttribute("title", d[k]);
+        });
+        document.querySelectorAll(".lang-toggle button").forEach(function (btn) {
+          btn.setAttribute("aria-pressed", btn.getAttribute("data-lang") === lang ? "true" : "false");
+        });
+      }
+
       function countPending() {
         return leads.filter(function (l) {
           return l.status === "todo" || l.status === "run";
@@ -865,7 +1139,7 @@
 
       function updatePendingPill() {
         var n = countPending();
-        pendingPill.textContent = n + " 条待跟进";
+        pendingPill.textContent = t().pending(n);
         pendingPill.className = "status-pill" + (n > 0 ? " warn" : "");
       }
 
@@ -878,7 +1152,8 @@
       function renderList() {
         listEl.innerHTML = "";
         if (!leads.length) {
-          listEl.innerHTML = '<p class="empty-hint">暂无线索</p>';
+          listEl.innerHTML = '<p class="empty-hint"></p>';
+          listEl.querySelector(".empty-hint").textContent = t().emptyLeads;
           return;
         }
         leads.forEach(function (lead) {
@@ -886,7 +1161,7 @@
           btn.type = "button";
           btn.className = "task";
           btn.setAttribute("data-id", lead.id);
-          btn.setAttribute("aria-label", "打开线索 " + lead.name);
+          btn.setAttribute("aria-label", t().openLead(lead.name));
           btn.innerHTML =
             '<div class="task-row">' +
               '<div>' +
@@ -897,16 +1172,11 @@
             '</div>' +
             '<div class="task-meta suggest-preview"></div>';
           btn.querySelector(".task-title").textContent = lead.name;
-          btn.querySelector(".task-meta").textContent =
-            "上次沟通 " + lead.last + " · 阶段：" + lead.stage;
+          btn.querySelector(".task-meta").textContent = t().lastStage(lead.last, lead.stage);
           btn.querySelector("span.chip").textContent = lead.statusLabel;
           btn.querySelector(".suggest-preview").textContent =
-            lead.status === "done"
-              ? "已跟进完成 · 点击可查看留痕"
-              : "建议：" + lead.suggest.slice(0, 42) + "…";
-          btn.addEventListener("click", function () {
-            openDetail(lead.id);
-          });
+            lead.status === "done" ? t().donePreview : t().suggestPreview(lead.suggest);
+          btn.addEventListener("click", function () { openDetail(lead.id); });
           listEl.appendChild(btn);
         });
         updatePendingPill();
@@ -937,7 +1207,7 @@
         var lead = findLead(id);
         if (!lead) return;
         currentId = id;
-        document.getElementById("detail-title").textContent = "线索详情";
+        document.getElementById("detail-title").textContent = t().leadDetail;
         document.getElementById("detail-name").textContent = lead.name;
         document.getElementById("detail-stage").textContent = lead.stage;
         document.getElementById("detail-last").textContent = lead.last;
@@ -969,11 +1239,15 @@
         showSalesView("detail");
       }
 
-      function addTimeline(lead, text) {
+      function addRuntimeEvent(leadId, textMap) {
+        var st = ensureStatus(leadId);
         var now = new Date();
         var hh = String(now.getHours()).padStart(2, "0");
         var mm = String(now.getMinutes()).padStart(2, "0");
-        lead.timeline.unshift({ t: "刚刚 " + hh + ":" + mm, text: text });
+        st.runtimeEvents.unshift({
+          t: t().justNow(hh, mm),
+          text: textMap
+        });
       }
 
       document.getElementById("sales-back").addEventListener("click", function () {
@@ -987,25 +1261,27 @@
         if (!lead || lead.status === "done") return;
         document.getElementById("sales-reply").value = lead.suggest;
         document.getElementById("sales-reply").focus();
-        showToast("已填入建议话术，可改写后发送");
+        showToast(t().toastDraft);
       });
 
       document.getElementById("btn-mark-done").addEventListener("click", function () {
         var lead = findLead(currentId);
         if (!lead || lead.status === "done") return;
-        lead.status = "done";
-        lead.statusLabel = "已完成";
-        addTimeline(lead, "销售：标记跟进完成");
+        var st = ensureStatus(lead.id);
+        st.status = "done";
+        addRuntimeEvent(lead.id, { zh: I18N.zh.tlMarkDone, en: I18N.en.tlMarkDone });
+        rebuildLeadsFromLang();
         openDetail(lead.id);
-        showToast("已标记完成 · 状态已写回");
+        showToast(t().toastDone);
       });
 
       document.getElementById("btn-snooze").addEventListener("click", function () {
         var lead = findLead(currentId);
         if (!lead || lead.status === "done") return;
-        addTimeline(lead, "销售：稍后提醒（演示）");
+        addRuntimeEvent(lead.id, { zh: I18N.zh.tlSnooze, en: I18N.en.tlSnooze });
+        rebuildLeadsFromLang();
         openDetail(lead.id);
-        showToast("已设置稍后提醒（演示）");
+        showToast(t().toastSnooze);
       });
 
       document.getElementById("sales-composer").addEventListener("submit", function (e) {
@@ -1014,17 +1290,20 @@
         if (!lead || lead.status === "done") return;
         var text = (document.getElementById("sales-reply").value || "").trim();
         if (!text) {
-          showToast("请先填写或采用话术草稿");
+          showToast(t().toastNeedDraft);
           return;
         }
-        addTimeline(lead, "销售：已发送跟进（演示）「" + text.slice(0, 28) + (text.length > 28 ? "…" : "") + "」");
-        if (lead.status === "todo") {
-          lead.status = "run";
-          lead.statusLabel = "进行中";
-        }
+        var snip = text.slice(0, 28) + (text.length > 28 ? "…" : "");
+        addRuntimeEvent(lead.id, {
+          zh: I18N.zh.tlSent(snip),
+          en: I18N.en.tlSent(snip)
+        });
+        var st = ensureStatus(lead.id);
+        if (st.status === "todo") st.status = "run";
         document.getElementById("sales-reply").value = "";
+        rebuildLeadsFromLang();
         openDetail(lead.id);
-        showToast("演示发送成功 · 已写入留痕");
+        showToast(t().toastSent);
       });
 
       function switchPanel(id) {
@@ -1057,23 +1336,16 @@
       bindSwitch(navBtns);
       bindSwitch(tabs);
 
-      /* 客服 mock */
       var form = document.getElementById("cs-form");
       var input = document.getElementById("cs-input");
       var chat = document.getElementById("cs-chat");
-      var replies = [
-        "已记录。若需改约，直接说期望时间段即可。",
-        "好的。高峰时段建议提前预约，我可以帮您占位。",
-        "这个问题我先按知识库答复；若涉及退款，将为您转人工。"
-      ];
-      var replyIdx = 0;
 
       function addMsg(role, text, hint) {
         var wrap = document.createElement("div");
         wrap.className = "msg " + role;
         var meta = document.createElement("div");
         meta.className = "msg-meta";
-        meta.textContent = role === "user" ? "访客" : "智能体 · 刚刚";
+        meta.textContent = role === "user" ? t().visitor : t().agentJust;
         var bubble = document.createElement("div");
         bubble.className = "bubble";
         bubble.appendChild(document.createTextNode(text));
@@ -1091,34 +1363,35 @@
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
-        var text = (input.value || "").trim();
-        if (!text) return;
-        addMsg("user", text);
+        var textVal = (input.value || "").trim();
+        if (!textVal) return;
+        addMsg("user", textVal);
         input.value = "";
+        var replies = t().csReplies;
         var reply = replies[replyIdx % replies.length];
         replyIdx += 1;
         window.setTimeout(function () {
-          addMsg("agent", reply, "演示回复 · 正式环境将接入门店知识库");
+          addMsg("agent", reply, t().csDemoHint);
         }, 420);
       });
 
-      /* 流程按钮反馈 */
       document.querySelectorAll("#panel-flow .task-actions button").forEach(function (btn) {
         btn.addEventListener("click", function (e) {
           e.stopPropagation();
           var label = btn.textContent;
-          btn.textContent = "已处理";
+          btn.textContent = t().processed;
           btn.disabled = true;
           btn.style.opacity = "0.7";
           window.setTimeout(function () {
-            btn.textContent = label;
+            /* restore via data-i18n if present */
+            var k = btn.getAttribute("data-i18n");
+            btn.textContent = k && t()[k] ? t()[k] : label;
             btn.disabled = false;
             btn.style.opacity = "";
           }, 1600);
         });
       });
 
-      /* 阻止流程 task 被当成可点卡片 */
       document.querySelectorAll("#panel-flow .task").forEach(function (el) {
         el.addEventListener("click", function (e) {
           if (e.target.closest("button")) return;
@@ -1126,7 +1399,31 @@
         });
       });
 
-      renderList();
+      function setLang(next) {
+        if (next !== "en" && next !== "zh") next = "zh";
+        lang = next;
+        try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+        applyStaticI18n();
+        rebuildLeadsFromLang();
+        if (currentId && detailView.classList.contains("active")) {
+          openDetail(currentId);
+        } else {
+          renderList();
+        }
+      }
+
+      document.querySelectorAll(".lang-toggle button").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          setLang(btn.getAttribute("data-lang"));
+        });
+      });
+
+      /* init status map from zh defaults */
+      I18N.zh.leads.forEach(function (L) {
+        leadStatus[L.id] = { status: L.status, runtimeEvents: [] };
+      });
+
+      setLang(lang);
     })();
   </script>
 </body>

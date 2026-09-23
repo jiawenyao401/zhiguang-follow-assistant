@@ -49,12 +49,18 @@
       padding: 20px 16px 48px;
     }
 
-    /* Header */
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
     .brand {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 28px;
+      min-width: 0;
     }
     .brand-mark {
       width: 36px;
@@ -78,10 +84,38 @@
       font-weight: 400;
     }
 
-    /* Hero */
-    .hero {
-      margin-bottom: 28px;
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 2px;
+      flex-shrink: 0;
     }
+    .lang-toggle button {
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 10px;
+      min-height: 32px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 999px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .lang-toggle button[aria-pressed="true"] {
+      background: var(--teal);
+      color: #fff;
+    }
+    .lang-toggle button:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 2px;
+    }
+
+    .hero { margin-bottom: 28px; }
     .badge {
       display: inline-flex;
       align-items: center;
@@ -118,7 +152,6 @@
       line-height: 1.65;
     }
 
-    /* Value props - asymmetric, not three equal cards */
     .values {
       display: flex;
       flex-direction: column;
@@ -136,9 +169,7 @@
       align-items: start;
       box-shadow: var(--shadow);
     }
-    .value:nth-child(2) {
-      border-left: 3px solid var(--accent);
-    }
+    .value:nth-child(2) { border-left: 3px solid var(--accent); }
     .value-icon {
       width: 40px;
       height: 40px;
@@ -165,14 +196,12 @@
       line-height: 1.5;
     }
 
-    /* Pricing */
     .section-label {
       font-size: 13px;
       font-weight: 600;
       color: var(--teal);
       letter-spacing: 0.04em;
       margin-bottom: 12px;
-      text-transform: none;
     }
 
     .pricing {
@@ -231,7 +260,6 @@
       font-size: 13px;
       color: var(--muted);
       line-height: 1.5;
-      margin-bottom: 0;
     }
     .price-desc strong {
       color: var(--ink);
@@ -253,10 +281,7 @@
       font-weight: 600;
     }
 
-    /* CTA */
-    .cta-block {
-      margin-bottom: 28px;
-    }
+    .cta-block { margin-bottom: 28px; }
     .cta {
       display: flex;
       align-items: center;
@@ -286,7 +311,6 @@
       margin-top: 10px;
     }
 
-    /* Footer */
     footer {
       border-top: 1px solid var(--line);
       padding-top: 20px;
@@ -294,9 +318,7 @@
       color: var(--muted);
       line-height: 1.65;
     }
-    footer .legal {
-      margin-bottom: 10px;
-    }
+    footer .legal { margin-bottom: 10px; }
     footer .account {
       background: var(--card);
       border: 1px solid var(--line);
@@ -305,14 +327,21 @@
       color: var(--ink);
       font-size: 12px;
     }
-    footer .account span {
-      color: var(--muted);
+    footer .account span { color: var(--muted); }
+
+    .demo-link {
+      display: block;
+      text-align: center;
+      font-size: 13px;
+      color: var(--teal);
+      font-weight: 500;
+      margin-bottom: 20px;
     }
+    .demo-link:hover { text-decoration: underline; }
 
     @media (min-width: 480px) {
       .wrap { padding: 28px 20px 56px; }
     }
-
     @media (prefers-reduced-motion: reduce) {
       .cta { transition: none; }
       html { scroll-behavior: auto; }
@@ -321,28 +350,34 @@
 </head>
 <body>
   <div class="wrap">
-    <header class="brand">
-      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-        <rect width="32" height="32" rx="8" fill="#0F5C56"/>
-        <path d="M8 22 L16 8 L20 14 L24 10" fill="none" stroke="#F6F3ED"
-              stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="24" cy="10" r="2" fill="#C45C26"/>
-      </svg>
-      <div class="brand-text">
-        <div class="brand-name">智光工作室</div>
-        <div class="brand-sub">Zhiguang Studio</div>
+    <div class="brand-row">
+      <header class="brand">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="8" fill="#0F5C56"/>
+          <path d="M8 22 L16 8 L20 14 L24 10" fill="none" stroke="#F6F3ED"
+                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="24" cy="10" r="2" fill="#C45C26"/>
+        </svg>
+        <div class="brand-text">
+          <div class="brand-name" data-i18n="brandName">智光工作室</div>
+          <div class="brand-sub">Zhiguang Studio</div>
+        </div>
+      </header>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang="zh" aria-pressed="true">CN</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
       </div>
-    </header>
+    </div>
 
     <section class="hero">
-      <div class="badge">两周内可验收</div>
-      <h1>帮中小企业上线<br /><em>能省人的智能体</em></h1>
-      <p class="one-liner">
-        客服接待、销售跟进、内部流程：按场景落地，按项目或按月收费。本地服务型中小企与销售小团队可直接试点。
+      <div class="badge" data-i18n="badge">两周内可验收</div>
+      <h1 data-i18n-html="heroTitle">帮中小企业上线<br /><em>能省人的智能体</em></h1>
+      <p class="one-liner" data-i18n="oneLiner">
+        智光工作室帮中小企业上线「能省人的智能体」——客服接待、销售跟进、内部流程，两周内可验收。
       </p>
     </section>
 
-    <section class="values" aria-label="核心能力">
+    <section class="values" aria-label="核心能力" data-i18n-aria="valuesAria">
       <article class="value">
         <div class="value-icon" aria-hidden="true">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -350,8 +385,8 @@
           </svg>
         </div>
         <div>
-          <h3>客服接待</h3>
-          <p>常见问题自动应答，复杂诉求转人工；夜间与高峰不丢单。</p>
+          <h3 data-i18n="v1Title">客服接待</h3>
+          <p data-i18n="v1Desc">常见问题自动应答，复杂诉求转人工；夜间与高峰不丢单。</p>
         </div>
       </article>
       <article class="value">
@@ -364,8 +399,8 @@
           </svg>
         </div>
         <div>
-          <h3>销售跟进</h3>
-          <p>线索提醒、回访话术与阶段推进，补足人手不足的跟进空档。</p>
+          <h3 data-i18n="v2Title">销售跟进</h3>
+          <p data-i18n="v2Desc">线索提醒、回访话术与阶段推进，补足人手不足的跟进空档。</p>
         </div>
       </article>
       <article class="value">
@@ -375,54 +410,181 @@
           </svg>
         </div>
         <div>
-          <h3>内部流程</h3>
-          <p>报备、审批、资料归档等重复动作自动化，少人也能跑顺。</p>
+          <h3 data-i18n="v3Title">内部流程</h3>
+          <p data-i18n="v3Desc">报备、审批、资料归档等重复动作自动化，少人也能跑顺。</p>
         </div>
       </article>
     </section>
 
-    <p class="section-label">收费方案</p>
-    <section class="pricing" aria-label="定价">
+    <p class="section-label" data-i18n="pricingLabel">收费方案</p>
+    <section class="pricing" aria-label="定价" data-i18n-aria="pricingAria">
       <article class="price-card">
-        <div class="price-tier">入门试点</div>
+        <div class="price-tier" data-i18n="tier1Name">入门试点</div>
         <div class="price-amount">
-          <span class="num">0.8–1万</span>
-          <span class="unit">/ 次</span>
+          <span class="num" data-i18n="tier1Price">0.8–1万</span>
+          <span class="unit" data-i18n="tier1Unit">/ 次</span>
         </div>
-        <p class="price-desc"><strong>单场景</strong>，约 2 周交付验收。适合先验证一个痛点。</p>
+        <p class="price-desc" data-i18n-html="tier1Desc"><strong>单场景</strong>，约 2 周交付验收。适合先验证一个痛点。</p>
       </article>
       <article class="price-card featured">
-        <span class="tag">常用</span>
-        <div class="price-tier">标准试点</div>
+        <span class="tag" data-i18n="tierPopular">常用</span>
+        <div class="price-tier" data-i18n="tier2Name">标准试点</div>
         <div class="price-amount">
-          <span class="num">1.5万</span>
-          <span class="unit">/ 次</span>
+          <span class="num" data-i18n="tier2Price">1.5万</span>
+          <span class="unit" data-i18n="tier2Unit">/ 次</span>
         </div>
-        <p class="price-desc"><strong>1–2 个场景</strong>联调上线，覆盖接待 + 跟进等组合。</p>
+        <p class="price-desc" data-i18n-html="tier2Desc"><strong>1–2 个场景</strong>联调上线，覆盖接待 + 跟进等组合。</p>
       </article>
       <article class="price-card">
-        <div class="price-tier">包月管家</div>
+        <div class="price-tier" data-i18n="tier3Name">包月管家</div>
         <div class="price-amount">
-          <span class="num">3–5千</span>
-          <span class="unit">/ 月</span>
+          <span class="num" data-i18n="tier3Price">3–5千</span>
+          <span class="unit" data-i18n="tier3Unit">/ 月</span>
         </div>
-        <p class="price-desc">上线后运维、话术迭代与小需求调整，按月预收。</p>
+        <p class="price-desc" data-i18n="tier3Desc">上线后运维、话术迭代与小需求调整，按月预收。</p>
       </article>
     </section>
 
-    <p class="pay-note">
+    <p class="pay-note" data-i18n-html="payNote">
       <strong>付款说明：</strong>试点 50% 预付 / 50% 验收；包月按月预收。工作室开具收据。
     </p>
 
     <div class="cta-block">
-      <a class="cta" href="#book" id="book">预约试点</a>
-      <p class="cta-hint">微信转发本页给决策人，或直接约 15 分钟沟通</p>
+      <a class="cta" href="#book" id="book" data-i18n="cta">预约试点</a>
+      <p class="cta-hint" data-i18n="ctaHint">微信转发本页给决策人，或直接约 15 分钟沟通</p>
     </div>
 
+    <a class="demo-link" href="./" data-i18n="demoLink">查看销售跟进 Demo →</a>
+
     <footer>
-      <p class="legal">工作室交付 · 开具收据 · 主体办理中不开专票</p>
-      <p class="account"><span>收款账户：</span>签约后提供（不广传实账，意向确认后私发）</p>
+      <p class="legal" data-i18n="footerLegal">工作室交付 · 开具收据 · 主体办理中不开专票</p>
+      <p class="account"><span data-i18n="footerAccountLabel">收款账户：</span><span data-i18n="footerAccount">签约后提供（不广传实账，意向确认后私发）</span></p>
     </footer>
   </div>
+
+  <script>
+    (function () {
+      var KEY = "zg-lang";
+      var dict = {
+        zh: {
+          htmlLang: "zh-CN",
+          title: "智光工作室 · 能省人的智能体",
+          desc: "智光工作室：帮中小企业上线能省人的智能体，两周可验收。",
+          brandName: "智光工作室",
+          badge: "两周内可验收",
+          heroTitle: "帮中小企业上线<br /><em>能省人的智能体</em>",
+          oneLiner: "智光工作室帮中小企业上线「能省人的智能体」——客服接待、销售跟进、内部流程，两周内可验收。",
+          valuesAria: "核心能力",
+          v1Title: "客服接待",
+          v1Desc: "常见问题自动应答，复杂诉求转人工；夜间与高峰不丢单。",
+          v2Title: "销售跟进",
+          v2Desc: "线索提醒、回访话术与阶段推进，补足人手不足的跟进空档。",
+          v3Title: "内部流程",
+          v3Desc: "报备、审批、资料归档等重复动作自动化，少人也能跑顺。",
+          pricingLabel: "收费方案",
+          pricingAria: "定价",
+          tier1Name: "入门试点",
+          tier1Price: "0.8–1万",
+          tier1Unit: "/ 次",
+          tier1Desc: "<strong>单场景</strong>，约 2 周交付验收。适合先验证一个痛点。",
+          tierPopular: "常用",
+          tier2Name: "标准试点",
+          tier2Price: "1.5万",
+          tier2Unit: "/ 次",
+          tier2Desc: "<strong>1–2 个场景</strong>联调上线，覆盖接待 + 跟进等组合。",
+          tier3Name: "包月管家",
+          tier3Price: "3–5千",
+          tier3Unit: "/ 月",
+          tier3Desc: "上线后运维、话术迭代与小需求调整，按月预收。",
+          payNote: "<strong>付款说明：</strong>试点 50% 预付 / 50% 验收；包月按月预收。工作室开具收据。",
+          cta: "预约试点",
+          ctaHint: "微信转发本页给决策人，或直接约 15 分钟沟通",
+          demoLink: "查看销售跟进 Demo →",
+          footerLegal: "工作室交付 · 开具收据 · 主体办理中不开专票",
+          footerAccountLabel: "收款账户：",
+          footerAccount: "签约后提供（不广传实账，意向确认后私发）"
+        },
+        en: {
+          htmlLang: "en",
+          title: "Zhiguang Studio · Labor-saving AI agents",
+          desc: "Zhiguang Studio helps SMEs launch labor-saving AI agents — acceptance within about two weeks.",
+          brandName: "Zhiguang Studio",
+          badge: "Acceptance in ~2 weeks",
+          heroTitle: "Launch labor-saving<br /><em>AI agents</em> for SMEs",
+          oneLiner: "Zhiguang Studio helps SMEs launch labor-saving AI agents — customer reception, sales follow-up, and internal workflows — acceptance within about two weeks.",
+          valuesAria: "Capabilities",
+          v1Title: "Customer reception",
+          v1Desc: "Auto-answers FAQs, escalates complex cases; no lost leads nights or peaks.",
+          v2Title: "Sales follow-up",
+          v2Desc: "Lead reminders, revisit scripts, and stage nudges when the team is short-handed.",
+          v3Title: "Internal workflows",
+          v3Desc: "Automate filings, approvals, and archiving so lean teams still run smoothly.",
+          pricingLabel: "Pricing",
+          pricingAria: "Pricing",
+          tier1Name: "Starter pilot",
+          tier1Price: "CNY 8k–10k",
+          tier1Unit: "/ project",
+          tier1Desc: "<strong>One scenario</strong>, delivery & acceptance in about 2 weeks. Prove one pain point first.",
+          tierPopular: "Popular",
+          tier2Name: "Standard pilot",
+          tier2Price: "CNY 15k",
+          tier2Unit: "/ project",
+          tier2Desc: "<strong>1–2 scenarios</strong> integrated live — e.g. reception + follow-up.",
+          tier3Name: "Monthly care",
+          tier3Price: "CNY 3k–5k",
+          tier3Unit: "/ month",
+          tier3Desc: "Post-launch ops, script iteration, and small tweaks — prepaid monthly.",
+          payNote: "<strong>Payment:</strong> pilots prepaid 50%, then 50% on acceptance; monthly care prepaid each month. Studio issues a receipt only.",
+          cta: "Book a pilot",
+          ctaHint: "Share this page with the decision-maker, or book a 15-minute chat",
+          demoLink: "Open sales follow-up demo →",
+          footerLegal: "Studio delivery · Receipt only · No VAT fapiao until the entity is set up",
+          footerAccountLabel: "Payment account: ",
+          footerAccount: "shared after signing (not published on this page; sent privately once you confirm)"
+        }
+      };
+
+      function apply(lang) {
+        var t = dict[lang] || dict.zh;
+        document.documentElement.lang = t.htmlLang;
+        document.title = t.title;
+        var meta = document.querySelector('meta[name="description"]');
+        if (meta) meta.setAttribute("content", t.desc);
+
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          var k = el.getAttribute("data-i18n");
+          if (t[k] != null) el.textContent = t[k];
+        });
+        document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+          var k = el.getAttribute("data-i18n-html");
+          if (t[k] != null) el.innerHTML = t[k];
+        });
+        document.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
+          var k = el.getAttribute("data-i18n-aria");
+          if (t[k] != null) el.setAttribute("aria-label", t[k]);
+        });
+
+        document.querySelectorAll(".lang-toggle button").forEach(function (btn) {
+          btn.setAttribute("aria-pressed", btn.getAttribute("data-lang") === lang ? "true" : "false");
+        });
+      }
+
+      function setLang(lang) {
+        if (lang !== "en" && lang !== "zh") lang = "zh";
+        try { localStorage.setItem(KEY, lang); } catch (e) {}
+        apply(lang);
+      }
+
+      var saved = "zh";
+      try { saved = localStorage.getItem(KEY) || "zh"; } catch (e) {}
+      setLang(saved);
+
+      document.querySelectorAll(".lang-toggle button").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          setLang(btn.getAttribute("data-lang"));
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
