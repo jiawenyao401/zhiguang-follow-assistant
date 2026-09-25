@@ -763,7 +763,7 @@
                 <span class="scene-bar-label" data-i18n="sceneBarLabel">行业示例</span>
                 <button type="button" data-scene="" aria-pressed="true" data-i18n="sceneDefault">通用</button>
                 <button type="button" data-scene="law" aria-pressed="false" data-i18n="sceneLaw">律所/代账</button>
-                <button type="button" data-scene="home" aria-pressed="false" data-i18n="sceneHome">装修家居</button>
+                <button type="button" data-scene="decor" aria-pressed="false" data-i18n="sceneHome">装修家居</button>
                 <button type="button" data-scene="clinic" aria-pressed="false" data-i18n="sceneClinic">诊所/医美</button>
               </div>
               <p class="agent-note" data-i18n="salesNote">点击线索进入详情 → 查看建议话术 → 标记完成。智能体按阶段提醒回访，销售确认后一键处理。</p>
@@ -1122,7 +1122,7 @@
         }
       };
 
-      /* Industry scene presets (?scene=law|home|clinic). All data is fictional example data. */
+      /* Industry scene presets (?scene=law|decor|clinic; ?scene=home is an alias of decor). All data is fictional example data. */
       var SCENES = {
         law: {
           zh: {
@@ -1216,7 +1216,7 @@
             ]
           }
         },
-        home: {
+        decor: {
           zh: {
             salesDesk: "跟进台 · 装修家居示例",
             salesNote: "装修家居示例：获客登记 → 量房预约 → 方案/报价 → 签约 → 施工跟进。智能体提醒量房、方案回访和施工节点通知，报价以正式方案为准。",
@@ -1233,7 +1233,7 @@
             csDemoHint: "演示回复 · 正式环境将接入排班与项目进度",
             leads: [
               {
-                id: "home-1", name: "示例客户D · 两居室厨卫翻新", stage: "量房预约", last: "2 天前",
+                id: "decor-1", name: "示例客户D · 两居室厨卫翻新", stage: "量房预约", last: "2 天前",
                 note: "短视频平台留言 · 周末有空 · 电话 138-0000-0004（虚构）", status: "todo",
                 suggest: "您好，上次您咨询的厨卫翻新，设计师本周六上午 10:00 或下午 14:00 可以上门量房，约 40 分钟。确认后我把设计师联系方式和到访须知发您。",
                 timeline: [
@@ -1243,7 +1243,7 @@
                 ]
               },
               {
-                id: "home-2", name: "示例客户E · 定制柜方案报价", stage: "方案/报价", last: "昨天",
+                id: "decor-2", name: "示例客户E · 定制柜方案报价", stage: "方案/报价", last: "昨天",
                 note: "到店咨询 · 关注板材环保等级 · 电话 139-0000-0005（虚构）", status: "run",
                 suggest: "您好，定制柜初版方案和分项报价已出，含板材型号与环保等级说明（以检测报告为准）。方便的话约个时间到店或视频过一遍，需要调整的地方当场改。",
                 timeline: [
@@ -1252,7 +1252,7 @@
                 ]
               },
               {
-                id: "home-3", name: "示例客户F · 水电节点验收通知", stage: "施工跟进", last: "3 天前",
+                id: "decor-3", name: "示例客户F · 水电节点验收通知", stage: "施工跟进", last: "3 天前",
                 note: "已签约 · 水电阶段 · 电话 137-0000-0006（虚构）", status: "done",
                 suggest: "您好，水电改造已完工，明天上午 10:00 项目经理约您现场验收水电节点，如时间不便请回复改约。",
                 timeline: [
@@ -1278,7 +1278,7 @@
             csDemoHint: "Demo reply · production ties to rosters and project progress",
             leads: [
               {
-                id: "home-1", name: "Sample client D · kitchen & bath refresh", stage: "Site measure", last: "2 days ago",
+                id: "decor-1", name: "Sample client D · kitchen & bath refresh", stage: "Site measure", last: "2 days ago",
                 note: "Short-video comment · free on weekends · Tel 138-0000-0004 (fictional)", status: "todo",
                 suggest: "Hi — for the kitchen & bath refresh, our designer can measure on-site Sat 10:00 or 14:00 (about 40 min). Confirm and I’ll send the designer’s contact and visit notes.",
                 timeline: [
@@ -1288,7 +1288,7 @@
                 ]
               },
               {
-                id: "home-2", name: "Sample client E · custom cabinet quote", stage: "Design/quote", last: "Yesterday",
+                id: "decor-2", name: "Sample client E · custom cabinet quote", stage: "Design/quote", last: "Yesterday",
                 note: "Walk-in · asks about board emission grade · Tel 139-0000-0005 (fictional)", status: "run",
                 suggest: "Hi — the first cabinet design and itemized quote are ready, with board model and emission grade notes (per the test report). Want to review in-store or by video? We can adjust on the spot.",
                 timeline: [
@@ -1297,7 +1297,7 @@
                 ]
               },
               {
-                id: "home-3", name: "Sample client F · plumbing/electrical check", stage: "Build follow-up", last: "3 days ago",
+                id: "decor-3", name: "Sample client F · plumbing/electrical check", stage: "Build follow-up", last: "3 days ago",
                 note: "Contracted · plumbing/electrical phase · Tel 137-0000-0006 (fictional)", status: "done",
                 suggest: "Hi — plumbing and electrical work is finished. The project manager would like to walk the milestone check with you tomorrow at 10:00; reply to reschedule if needed.",
                 timeline: [
@@ -1402,10 +1402,12 @@
         }
       };
 
-      var SCENE_KEYS = ["law", "home", "clinic"];
+      var SCENE_KEYS = ["law", "decor", "clinic"];
+      var SCENE_ALIASES = { home: "decor" };
       var scene = "";
       try {
         var qs = new URLSearchParams(window.location.search).get("scene");
+        if (qs && SCENE_ALIASES[qs]) qs = SCENE_ALIASES[qs];
         if (qs && SCENE_KEYS.indexOf(qs) !== -1) scene = qs;
       } catch (e) {}
 

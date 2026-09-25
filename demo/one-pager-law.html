@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="智光工作室：为律所与代账机构上线咨询接待、期限提醒、资料收集智能体，两周可验收。" />
+  <title>智光工作室 · 律所与代账机构的咨询接待与催办助手</title>
+  <style>
+    :root {
+      --ink: #0A2422;
+      --teal: #0F5C56;
+      --teal-mid: #1A7A72;
+      --teal-soft: #E6F2F0;
+      --accent: #C45C26;
+      --accent-hover: #A84C1E;
+      --bone: #F6F3ED;
+      --card: #FFFFFF;
+      --muted: #5C6B69;
+      --line: #D8E0DE;
+      --ok: #2F7D4A;
+      --radius-sm: 6px;
+      --radius: 10px;
+      --radius-lg: 14px;
+      --font-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+        "Noto Sans SC", "Source Han Sans SC", system-ui, -apple-system,
+        "Segoe UI", sans-serif;
+      --shadow: 0 1px 2px rgba(10, 36, 34, 0.04), 0 8px 24px rgba(10, 36, 34, 0.06);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bone);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+      min-height: 100dvh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; }
+
+    .wrap {
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 20px 16px 48px;
+    }
+
+    /* Header */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      flex: 1;
+      min-width: 0;
+    }
+    .brand-name {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+    .brand-sub {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    /* Lang toggle */
+    .lang-toggle {
+      display: inline-flex;
+      flex-shrink: 0;
+      align-items: center;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 2px;
+      gap: 0;
+      box-shadow: var(--shadow);
+    }
+    .lang-toggle button {
+      appearance: none;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      line-height: 1;
+      min-height: 28px;
+      min-width: 36px;
+      transition: background 160ms ease, color 160ms ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .lang-toggle button[aria-pressed="true"] {
+      background: var(--teal);
+      color: #fff;
+    }
+    .lang-toggle button:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 2px;
+    }
+
+    /* Hero */
+    .hero {
+      margin-bottom: 28px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--teal-soft);
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    .badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal-mid);
+    }
+    .hero h1 {
+      font-size: clamp(24px, 6.5vw, 30px);
+      font-weight: 700;
+      line-height: 1.28;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--teal);
+    }
+    .one-liner {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* Value props */
+    .values {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .value {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 16px 16px 16px 14px;
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 12px;
+      align-items: start;
+      box-shadow: var(--shadow);
+    }
+    .value:nth-child(2) {
+      border-left: 3px solid var(--accent);
+    }
+    .value-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius);
+      background: var(--teal-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--teal);
+    }
+    .value:nth-child(2) .value-icon {
+      background: #F8EDE6;
+      color: var(--accent);
+    }
+    .value h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .value p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Pricing */
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--teal);
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+      text-transform: none;
+    }
+
+    .pricing {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .price-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 18px 16px;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+    .price-card.featured {
+      border-color: var(--teal);
+      background: linear-gradient(165deg, #FFFFFF 60%, var(--teal-soft) 100%);
+    }
+    .price-card.featured .tag {
+      position: absolute;
+      top: -9px;
+      right: 14px;
+      background: var(--teal);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+    .price-tier {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .price-amount {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .price-amount .num {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    .price-amount .unit {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .price-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+    .price-desc strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .pay-note {
+      font-size: 12px;
+      color: var(--muted);
+      background: var(--card);
+      border: 1px dashed var(--line);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-bottom: 28px;
+      line-height: 1.55;
+    }
+    .pay-note strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* CTA */
+    .cta-block {
+      margin-bottom: 28px;
+    }
+    .cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 48px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 180ms ease;
+      font-family: inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cta:hover { background: var(--accent-hover); }
+    .cta:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .cta-hint {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    footer .legal {
+      margin-bottom: 10px;
+    }
+    footer .account {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      color: var(--ink);
+      font-size: 12px;
+    }
+    footer .account span {
+      color: var(--muted);
+    }
+
+    /* Example scene (industry variants) */
+    .example {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 14px 14px 12px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+    }
+    .example-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .example-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--teal);
+      letter-spacing: 0.02em;
+      min-width: 0;
+    }
+    .example-tag {
+      flex-shrink: 0;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 2px 8px;
+      white-space: nowrap;
+    }
+    .example-meta {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 4px 10px;
+      font-size: 12px;
+      line-height: 1.45;
+      background: var(--bone);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+    .example-meta dt { color: var(--muted); }
+    .example-meta dd { color: var(--ink); min-width: 0; overflow-wrap: anywhere; }
+    .chat {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .msg {
+      max-width: 88%;
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 8px 11px;
+      border-radius: var(--radius);
+      overflow-wrap: anywhere;
+    }
+    .msg .who {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+    .msg.in {
+      align-self: flex-start;
+      background: var(--bone);
+      border-top-left-radius: 4px;
+    }
+    .msg.out {
+      align-self: flex-end;
+      background: var(--teal-soft);
+      border-top-right-radius: 4px;
+    }
+    .example-next {
+      margin-top: 10px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--ink);
+      border-left: 3px solid var(--teal);
+      background: var(--teal-soft);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+    }
+    .example-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 4px 12px;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--line);
+    }
+    .example-note {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+      flex: 1 1 200px;
+      min-width: 0;
+    }
+    .demo-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--teal);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+    }
+    .demo-link:hover { color: var(--teal-mid); }
+    .demo-link:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* EN typography tweaks */
+    html[lang="en"] .hero h1 {
+      font-size: clamp(22px, 5.8vw, 28px);
+      letter-spacing: -0.015em;
+    }
+    html[lang="en"] .brand-name {
+      letter-spacing: -0.01em;
+    }
+    html[lang="en"] .price-amount .num {
+      font-size: 22px;
+    }
+
+    @media (min-width: 480px) {
+      .wrap { padding: 28px 20px 56px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cta, .lang-toggle button { transition: none; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#0F5C56"/>
+        <path d="M8 22 L16 8 L20 14 L24 10" fill="none" stroke="#F6F3ED"
+              stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="24" cy="10" r="2" fill="#C45C26"/>
+      </svg>
+      <div class="brand-text">
+        <div class="brand-name" data-i18n="brandName">智光工作室</div>
+        <div class="brand-sub" data-i18n="brandSub">Zhiguang Studio</div>
+      </div>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang="zh" aria-pressed="true">中文</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="badge" data-i18n="badge">律所 · 代账 · 两周内可验收</div>
+      <h1 data-i18n-html="heroTitle">律所与代账机构的<br /><em>咨询接待与催办助手</em></h1>
+      <p class="one-liner" data-i18n="oneLiner">咨询接待、期限提醒、客户资料收集：把重复的问询与催办交给智能体，专业判断仍由律师与会计把关。按项目或按月收费，小团队可直接试点。</p>
+    </section>
+
+    <section class="values" aria-label="核心能力" data-i18n-aria="valuesAria">
+      <article class="value">
+        <div class="value-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 data-i18n="s1Title">咨询接待</h3>
+          <p data-i18n="s1Desc">按事项类型收集基本情况、预约面谈时间；法律与财税判断一律转律师/会计。夜间咨询也有记录。</p>
+        </div>
+      </article>
+      <article class="value">
+        <div class="value-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div>
+          <h3 data-i18n="s2Title">合同与申报期限提醒</h3>
+          <p data-i18n="s2Desc">合同续签、纳税申报、年报等节点提前提醒客户与经办人，临近截止逐级催办。</p>
+        </div>
+      </article>
+      <article class="value">
+        <div class="value-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <div>
+          <h3 data-i18n="s3Title">客户资料收集</h3>
+          <p data-i18n="s3Desc">按清单向客户催收票据、合同与证照，缺件自动提示，收齐后归档并通知经办人。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="example" aria-label="示例场景" data-i18n-aria="exAria">
+      <div class="example-head">
+        <p class="example-title" data-i18n="exTitle">示例场景 · 月度资料催收</p>
+        <span class="example-tag" data-i18n="exTag">虚构示例</span>
+      </div>
+      <div class="chat">
+        <p class="msg out"><span class="who" data-i18n="m1Who">资料助手</span><span data-i18n="m1">张先生您好，这里是示例财税（虚构）的资料助手。9 月记账还差 2 项：进项发票、银行回单，可直接在此上传照片。</span></p>
+        <p class="msg in"><span class="who" data-i18n="m2Who">张先生（虚构）</span><span data-i18n="m2">发票明天拍给你，回单要去银行打印。</span></p>
+        <p class="msg out"><span class="who" data-i18n="m3Who">资料助手</span><span data-i18n="m3">好的，已记录。明天 18:00 再提醒您一次；回单收到后自动转给经办会计（示例：李会计）。</span></p>
+      </div>
+      <p class="example-next" data-i18n="exNext">税务或法律问题不由智能体回答，一律转律师/会计本人。</p>
+      <div class="example-foot">
+        <p class="example-note" data-i18n="exNote">客户、机构名称与号码均为演示虚构，如 138-0000-0000。</p>
+        <a class="demo-link" href="https://jiawenyao401.github.io/zhiguang-follow-assistant/demo/?scene=law" target="_blank" rel="noopener" data-i18n="demoLink">看演示</a>
+      </div>
+    </section>
+
+    <p class="section-label" data-i18n="pricingLabel">收费方案</p>
+    <section class="pricing" aria-label="定价" data-i18n-aria="pricingAria">
+      <article class="price-card">
+        <div class="price-tier" data-i18n="t1Name">入门试点</div>
+        <div class="price-amount">
+          <span class="num" data-i18n="t1Price">0.8–1万</span>
+          <span class="unit" data-i18n="t1Unit">/ 次</span>
+        </div>
+        <p class="price-desc" data-i18n-html="t1Desc"><strong>单场景</strong>，约 2 周交付验收。适合先验证一个痛点。</p>
+      </article>
+      <article class="price-card featured">
+        <span class="tag" data-i18n="t2Tag">常用</span>
+        <div class="price-tier" data-i18n="t2Name">标准试点</div>
+        <div class="price-amount">
+          <span class="num" data-i18n="t2Price">1.5万</span>
+          <span class="unit" data-i18n="t2Unit">/ 次</span>
+        </div>
+        <p class="price-desc" data-i18n-html="t2Desc"><strong>1–2 个场景</strong>联调上线，覆盖接待 + 跟进等组合。</p>
+      </article>
+      <article class="price-card">
+        <div class="price-tier" data-i18n="t3Name">包月管家</div>
+        <div class="price-amount">
+          <span class="num" data-i18n="t3Price">3–5千</span>
+          <span class="unit" data-i18n="t3Unit">/ 月</span>
+        </div>
+        <p class="price-desc" data-i18n="t3Desc">上线后运维、话术迭代与小需求调整，按月预收。</p>
+      </article>
+    </section>
+
+    <p class="pay-note" data-i18n-html="payNote">
+      <strong>付款说明：</strong>试点 50% 预付 / 50% 验收；包月按月预收。工作室开具收据。
+    </p>
+
+    <div class="cta-block">
+      <a class="cta" href="#book" id="book" data-i18n="cta">预约试点</a>
+      <p class="cta-hint" data-i18n="ctaHint">微信转发本页给决策人，或直接约 15 分钟沟通</p>
+    </div>
+
+    <footer>
+      <p class="legal" data-i18n="legal">工作室交付 · 开具收据 · 主体办理中不开专票</p>
+      <p class="account" data-i18n-html="account"><span>收款账户：</span>签约后提供（不广传实账，意向确认后私发）</p>
+    </footer>
+  </div>
+
+  <script>
+  (function () {
+    var STORAGE_KEY = "zhiguang-lang";
+
+    var STRINGS = {
+      zh: {
+        docTitle: "智光工作室 · 律所与代账机构的咨询接待与催办助手",
+        metaDesc: "智光工作室：为律所与代账机构上线咨询接待、期限提醒、资料收集智能体，两周可验收。",
+        brandName: "智光工作室",
+        brandSub: "Zhiguang Studio",
+        badge: "律所 · 代账 · 两周内可验收",
+        heroTitle: "律所与代账机构的<br /><em>咨询接待与催办助手</em>",
+        oneLiner: "咨询接待、期限提醒、客户资料收集：把重复的问询与催办交给智能体，专业判断仍由律师与会计把关。按项目或按月收费，小团队可直接试点。",
+        valuesAria: "核心能力",
+        s1Title: "咨询接待",
+        s1Desc: "按事项类型收集基本情况、预约面谈时间；法律与财税判断一律转律师/会计。夜间咨询也有记录。",
+        s2Title: "合同与申报期限提醒",
+        s2Desc: "合同续签、纳税申报、年报等节点提前提醒客户与经办人，临近截止逐级催办。",
+        s3Title: "客户资料收集",
+        s3Desc: "按清单向客户催收票据、合同与证照，缺件自动提示，收齐后归档并通知经办人。",
+        pricingLabel: "收费方案",
+        pricingAria: "定价",
+        t1Name: "入门试点",
+        t1Price: "0.8–1万",
+        t1Unit: "/ 次",
+        t1Desc: "<strong>单场景</strong>，约 2 周交付验收。适合先验证一个痛点。",
+        t2Tag: "常用",
+        t2Name: "标准试点",
+        t2Price: "1.5万",
+        t2Unit: "/ 次",
+        t2Desc: "<strong>1–2 个场景</strong>联调上线，覆盖接待 + 跟进等组合。",
+        t3Name: "包月管家",
+        t3Price: "3–5千",
+        t3Unit: "/ 月",
+        t3Desc: "上线后运维、话术迭代与小需求调整，按月预收。",
+        payNote: "<strong>付款说明：</strong>试点 50% 预付 / 50% 验收；包月按月预收。工作室开具收据。",
+        cta: "预约试点",
+        ctaHint: "微信转发本页给决策人，或直接约 15 分钟沟通",
+        legal: "工作室交付 · 开具收据 · 主体办理中不开专票",
+        account: "<span>收款账户：</span>签约后提供（不广传实账，意向确认后私发）",
+        exAria: "示例场景",
+        exTitle: "示例场景 · 月度资料催收",
+        exTag: "虚构示例",
+        m1Who: "资料助手",
+        m1: "张先生您好，这里是示例财税（虚构）的资料助手。9 月记账还差 2 项：进项发票、银行回单，可直接在此上传照片。",
+        m2Who: "张先生（虚构）",
+        m2: "发票明天拍给你，回单要去银行打印。",
+        m3Who: "资料助手",
+        m3: "好的，已记录。明天 18:00 再提醒您一次；回单收到后自动转给经办会计（示例：李会计）。",
+        exNext: "税务或法律问题不由智能体回答，一律转律师/会计本人。",
+        exNote: "客户、机构名称与号码均为演示虚构，如 138-0000-0000。",
+        demoLink: "看演示"
+      },
+      en: {
+        docTitle: "Zhiguang Studio · Intake & deadline agent for law firms and bookkeeping agencies",
+        metaDesc: "Zhiguang Studio: consultation intake, deadline reminders, and document collection agents for law firms and bookkeeping agencies — accept in ~2 weeks.",
+        brandName: "Zhiguang Studio",
+        brandSub: "智光工作室",
+        badge: "Law & bookkeeping · Accept in ~2 weeks",
+        heroTitle: "Intake & deadline agent<br /><em>for law firms and bookkeeping agencies</em>",
+        oneLiner: "Consultation intake, deadline reminders, and client document collection — the agent does the repetitive asking and chasing; professional judgment stays with your lawyers and accountants. Project or monthly retainer.",
+        valuesAria: "Scenarios",
+        s1Title: "Consultation intake",
+        s1Desc: "Collects case basics by matter type and books consultations; legal and tax questions always go to a lawyer or accountant. After-hours inquiries get logged.",
+        s2Title: "Contract & filing deadline reminders",
+        s2Desc: "Advance reminders to clients and staff for renewals, tax filings, and annual reports, with escalating nudges as due dates approach.",
+        s3Title: "Client document collection",
+        s3Desc: "Chases receipts, contracts, and licenses against a checklist, flags missing items, then files them and notifies the owner.",
+        pricingLabel: "Pricing",
+        pricingAria: "Pricing tiers",
+        t1Name: "Starter",
+        t1Price: "CNY 8–10k",
+        t1Unit: "/ project",
+        t1Desc: "<strong>Single scenario</strong>, ~2 weeks to acceptance. Validate one pain point first.",
+        t2Tag: "Popular",
+        t2Name: "Standard",
+        t2Price: "CNY 15k",
+        t2Unit: "/ project",
+        t2Desc: "<strong>1–2 scenarios</strong> integrated live — e.g. reception + follow-up.",
+        t3Name: "Retainer",
+        t3Price: "CNY 3–5k",
+        t3Unit: "/ mo",
+        t3Desc: "Ops, script iteration, and small tweaks after go-live. Monthly prepaid.",
+        payNote: "<strong>Payment:</strong> Pilot — 50% prepaid to start, 50% on acceptance. Retainer — monthly prepaid. Zhiguang Studio issues a receipt.",
+        cta: "Book a pilot",
+        ctaHint: "Forward this page to the decision-maker, or book a 15-min chat",
+        legal: "Zhiguang Studio delivery · Receipt issued · No VAT fapiao until a legal entity is set up",
+        account: "<span>Payment account:</span> shared privately after signing (not posted publicly)",
+        exAria: "Example scene",
+        exTitle: "Example · Monthly document chase",
+        exTag: "Fictional",
+        m1Who: "Docs assistant",
+        m1: "Hi Mr. Zhang, this is the docs assistant at Sample Accounting (fictional). For September bookkeeping we still need 2 items: purchase invoices and bank slips. You can upload photos right here.",
+        m2Who: "Mr. Zhang (fictional)",
+        m2: "I'll send the invoices tomorrow; the bank slips need a trip to the bank.",
+        m3Who: "Docs assistant",
+        m3: "Got it. I'll remind you again tomorrow at 18:00, and forward the bank slips to your accountant (e.g. Ms. Li, sample) once received.",
+        exNext: "Tax or legal questions are never answered by the agent — they always go to the lawyer or accountant.",
+        exNote: "All client, firm names and numbers are fictional, e.g. 138-0000-0000.",
+        demoLink: "View demo"
+      }
+    };
+
+    function applyLang(lang) {
+      if (lang !== "en" && lang !== "zh") lang = "zh";
+      var t = STRINGS[lang];
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+      document.title = t.docTitle;
+      var meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute("content", t.metaDesc);
+
+      document.querySelectorAll("[data-i18n]").forEach(function (el) {
+        var key = el.getAttribute("data-i18n");
+        if (t[key] != null) el.textContent = t[key];
+      });
+      document.querySelectorAll("[data-i18n-html]").forEach(function (el) {
+        var key = el.getAttribute("data-i18n-html");
+        if (t[key] != null) el.innerHTML = t[key];
+      });
+      document.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
+        var key = el.getAttribute("data-i18n-aria");
+        if (t[key] != null) el.setAttribute("aria-label", t[key]);
+      });
+
+      document.querySelectorAll(".lang-toggle button").forEach(function (btn) {
+        var on = btn.getAttribute("data-lang") === lang;
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+
+      try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
+    }
+
+    function init() {
+      var saved = null;
+      try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+      var lang = (saved === "en" || saved === "zh") ? saved : "zh";
+      applyLang(lang);
+
+      document.querySelectorAll(".lang-toggle button").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          applyLang(btn.getAttribute("data-lang"));
+        });
+      });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
+    }
+  })();
+  </script>
+</body>
+</html>
