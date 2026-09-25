@@ -600,7 +600,85 @@
       outline-offset: 1px;
     }
 
+    /* Industry scene presets */
+    .scene-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      flex-shrink: 0;
+    }
+    .scene-bar-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      margin-right: 2px;
+    }
+    .scene-bar button {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      min-height: 32px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--bone);
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .scene-bar button[aria-pressed="true"] {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #fff;
+      font-weight: 600;
+    }
+    .scene-bar button:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 1px;
+    }
+    .pipeline {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 2px;
+      margin: 0 14px 10px;
+      font-size: 11px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .pipeline-label { font-weight: 600; margin-right: 4px; }
+    .pipeline-step {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      white-space: nowrap;
+    }
+    .pipeline-step.has { background: var(--teal-soft); border-color: #C5DED9; color: var(--teal); font-weight: 600; }
+    .pipeline-arrow { color: #A7B5B2; padding: 0 1px; }
+    .scene-notice {
+      margin: 0 14px 10px;
+      padding: 8px 12px;
+      background: #FBF3DC;
+      border: 1px solid #EAD9A6;
+      border-radius: var(--radius);
+      font-size: 12px;
+      font-weight: 600;
+      color: #7A5A00;
+      line-height: 1.5;
+      flex-shrink: 0;
+    }
+    .detail-scroll .scene-notice, .chat-scroll .scene-notice { margin: 0; }
+    .scene-notice[hidden], .pipeline[hidden] { display: none; }
+
     @media (min-width: 768px) {
+      .scene-bar { padding: 8px 24px; }
+      .pipeline, .scene-notice { margin-left: 24px; margin-right: 24px; }
       .sidenav { display: flex; }
       .tabs { display: none; }
       .chat-scroll, .task-list, .detail-scroll { padding: 20px 24px; }
@@ -681,7 +759,16 @@
                 <h2 data-i18n="salesDesk">销售跟进台</h2>
                 <span class="status-pill warn" id="sales-pending-pill">3 条待跟进</span>
               </div>
+              <div class="scene-bar" id="scene-bar" role="group" aria-label="行业示例" data-i18n-aria="sceneBarLabel">
+                <span class="scene-bar-label" data-i18n="sceneBarLabel">行业示例</span>
+                <button type="button" data-scene="" aria-pressed="true" data-i18n="sceneDefault">通用</button>
+                <button type="button" data-scene="law" aria-pressed="false" data-i18n="sceneLaw">律所/代账</button>
+                <button type="button" data-scene="home" aria-pressed="false" data-i18n="sceneHome">装修家居</button>
+                <button type="button" data-scene="clinic" aria-pressed="false" data-i18n="sceneClinic">诊所/医美</button>
+              </div>
               <p class="agent-note" data-i18n="salesNote">点击线索进入详情 → 查看建议话术 → 标记完成。智能体按阶段提醒回访，销售确认后一键处理。</p>
+              <p class="scene-notice" data-i18n="sceneNotice" hidden></p>
+              <div class="pipeline" id="sales-pipeline" aria-label="跟进阶段" hidden></div>
               <div class="task-list" id="sales-list" aria-label="跟进列表"></div>
               <p class="studio-foot" data-i18n="footDemo">智光工作室 · 演示数据，非真实客户</p>
             </div>
@@ -719,6 +806,7 @@
                   </dl>
                 </div>
 
+                <p class="scene-notice" data-i18n="sceneNotice" hidden></p>
                 <div class="suggest-box" id="suggest-box">
                   <div class="label" data-i18n="suggestLabel">智能体建议话术</div>
                   <div class="text" id="detail-suggest">—</div>
@@ -751,6 +839,7 @@
 <span class="status-pill" data-i18n="csStatus">在线 · 已应答 12</span>
           </div>
           <div class="chat-scroll" id="cs-chat">
+            <p class="scene-notice" data-i18n="sceneNotice" hidden></p>
             <div class="msg agent">
               <div class="msg-meta" data-i18n="agentJust">智能体 · 刚刚</div>
               <div class="bubble" data-i18n="csMsg1">您好，我是门店客服助手。可以查营业时间、预约到店，或转人工处理售后。</div>
@@ -888,6 +977,8 @@
             "这个问题我先按知识库答复；若涉及退款，将为您转人工。"
           ],
           csDemoHint: "演示回复 · 正式环境将接入门店知识库",
+          sceneBarLabel: "行业示例", sceneDefault: "通用", sceneLaw: "律所/代账", sceneHome: "装修家居", sceneClinic: "诊所/医美",
+          pipelineLabel: "跟进阶段",
           leads: [
             {
               id: "L1",
@@ -984,6 +1075,8 @@
             "I’ll answer from the knowledge base; refunds escalate to a human."
           ],
           csDemoHint: "Demo reply · production ties to store knowledge base",
+          sceneBarLabel: "Industry examples", sceneDefault: "General", sceneLaw: "Law / Accounting", sceneHome: "Home reno", sceneClinic: "Clinic / Aesthetics",
+          pipelineLabel: "Pipeline",
           leads: [
             {
               id: "L1",
@@ -1029,7 +1122,304 @@
         }
       };
 
-      function t() { return I18N[lang] || I18N.zh; }
+      /* Industry scene presets (?scene=law|home|clinic). All data is fictional example data. */
+      var SCENES = {
+        law: {
+          zh: {
+            salesDesk: "跟进台 · 律所/代账示例",
+            salesNote: "律所/代账示例：咨询登记 → 材料收集 → 报价确认 → 签约委托。智能体提醒回访与材料补齐；具体法律/财税意见由执业人员本人给出。",
+            stages: ["咨询登记", "材料收集", "报价确认", "签约委托", "服务中"],
+            csMsg1: "您好，我是事务所前台助手（示例）。可以登记咨询、预约面谈时间、查询材料清单；具体法律/财税意见由专业人员本人解答。",
+            csMsg2: "想咨询小微企业代账，怎么收费？",
+            csMsg3: "收费需按业务量和纳税人类型确定。我先帮您登记，负责会计将在 1 个工作日内联系您；周三、周四下午可预约电话沟通。",
+            csHint3: "已登记咨询 · 专业意见由执业人员给出",
+            csReplies: [
+              "已记录。需要预约面谈的话，告诉我方便的时间段即可。",
+              "这个问题需要专业人员判断，我先为您登记并转交负责人。",
+              "好的，材料清单我稍后发您，补齐后通知负责人核对。"
+            ],
+            csDemoHint: "演示回复 · 助手不提供法律/财税意见",
+            leads: [
+              {
+                id: "law-1", name: "示例客户A · 小微企业月度代账", stage: "报价确认", last: "2 天前",
+                note: "网站留言 · 小规模纳税人 · 电话 138-0000-0001（虚构）", status: "todo",
+                suggest: "王总您好（示例），上次沟通的月度代账方案已整理好，含记账、申报节点和资料交接清单。方便的话本周约 15 分钟电话确认服务范围，确认后我发委托确认单。",
+                timeline: [
+                  { t: "今天 09:20", text: "智能体：报价跟进提醒已生成" },
+                  { t: "2 天前", text: "会计：发送代账服务报价单" },
+                  { t: "4 天前", text: "线索入库 · 来源网站留言" }
+                ]
+              },
+              {
+                id: "law-2", name: "示例客户B · 劳动合同咨询预约", stage: "咨询登记", last: "昨天",
+                note: "公众号表单 · 希望律师面谈 · 电话 139-0000-0002（虚构）", status: "run",
+                suggest: "您好，已收到您的咨询登记。具体法律意见需由执业律师面谈后本人给出，我先帮您预约：周三 10:00 或周四 15:00，您看哪个方便？可提前准备劳动合同与相关沟通记录。",
+                timeline: [
+                  { t: "昨天 17:05", text: "已发送面谈时间选项，等待回复" },
+                  { t: "昨天 16:40", text: "线索入库 · 来源公众号表单" }
+                ]
+              },
+              {
+                id: "law-3", name: "示例客户C · 年报材料补齐", stage: "材料收集", last: "5 天前",
+                note: "老客户续办 · 电话 137-0000-0003（虚构）", status: "done",
+                suggest: "您好，年报所需材料还差营业执照副本扫描件和上季度银行流水，上传到共享链接后我们会通知负责会计核对。",
+                timeline: [
+                  { t: "3 天前", text: "材料已补齐并转交负责会计" },
+                  { t: "5 天前", text: "智能体：发送材料清单" }
+                ]
+              }
+            ]
+          },
+          en: {
+            salesDesk: "Desk · Law / Accounting example",
+            salesNote: "Law / accounting example: intake → documents → quote → engagement. The agent nudges follow-ups and missing documents; legal or tax advice comes only from qualified staff.",
+            stages: ["Intake", "Documents", "Quote", "Engagement", "In service"],
+            csMsg1: "Hi — front-desk assistant (example). I can log an inquiry, book a consultation, or send a document checklist; legal/tax advice comes from qualified staff.",
+            csMsg2: "How much is monthly bookkeeping for a small business?",
+            csMsg3: "Pricing depends on volume and taxpayer type. I’ll log your inquiry and the assigned accountant will contact you within 1 business day; Wed/Thu afternoon calls are open.",
+            csHint3: "Inquiry logged · advice only from qualified staff",
+            csReplies: [
+              "Noted. To book a consultation, just tell me a time window.",
+              "That needs a professional’s judgment — I’ll log it and hand it to the owner.",
+              "OK, I’ll send the document checklist; the accountant checks once it’s complete."
+            ],
+            csDemoHint: "Demo reply · the assistant gives no legal/tax advice",
+            leads: [
+              {
+                id: "law-1", name: "Sample client A · monthly bookkeeping", stage: "Quote", last: "2 days ago",
+                note: "Website form · small-scale taxpayer · Tel 138-0000-0001 (fictional)", status: "todo",
+                suggest: "Hi Mr. Wang (sample) — the monthly bookkeeping plan we discussed is ready, covering bookkeeping, filing dates, and a document hand-off list. Free for a 15-minute call this week to confirm scope? I’ll then send the engagement form.",
+                timeline: [
+                  { t: "Today 09:20", text: "Agent: quote follow-up reminder created" },
+                  { t: "2 days ago", text: "Accountant: sent bookkeeping quote" },
+                  { t: "4 days ago", text: "Lead in · website form" }
+                ]
+              },
+              {
+                id: "law-2", name: "Sample client B · employment contract consult", stage: "Intake", last: "Yesterday",
+                note: "Official-account form · wants to meet a lawyer · Tel 139-0000-0002 (fictional)", status: "run",
+                suggest: "Hi — we received your inquiry. Legal advice can only come from a licensed lawyer in person, so let me book a meeting: Wed 10:00 or Thu 15:00? Please bring the contract and related messages.",
+                timeline: [
+                  { t: "Yesterday 17:05", text: "Meeting options sent, awaiting reply" },
+                  { t: "Yesterday 16:40", text: "Lead in · official-account form" }
+                ]
+              },
+              {
+                id: "law-3", name: "Sample client C · annual report documents", stage: "Documents", last: "5 days ago",
+                note: "Returning client · Tel 137-0000-0003 (fictional)", status: "done",
+                suggest: "Hi — for the annual report we still need a scan of the business license copy and last quarter’s bank statement. Upload them to the shared link and we’ll notify the accountant.",
+                timeline: [
+                  { t: "3 days ago", text: "Documents complete; handed to accountant" },
+                  { t: "5 days ago", text: "Agent: sent document checklist" }
+                ]
+              }
+            ]
+          }
+        },
+        home: {
+          zh: {
+            salesDesk: "跟进台 · 装修家居示例",
+            salesNote: "装修家居示例：获客登记 → 量房预约 → 方案/报价 → 签约 → 施工跟进。智能体提醒量房、方案回访和施工节点通知，报价以正式方案为准。",
+            stages: ["获客登记", "量房预约", "方案/报价", "签约", "施工跟进"],
+            csMsg1: "您好，我是装修顾问助手（示例）。可以预约量房、查询施工节点，或为您转接设计师。",
+            csMsg2: "周末能上门量房吗？",
+            csMsg3: "可以，本周六 10:00、14:00 有空档，量房约 40 分钟。确认后设计师会与您联系。",
+            csHint3: "已同步设计师排班 · 报价以正式方案为准",
+            csReplies: [
+              "已记录。需要改约量房时间，直接告诉我期望时间段即可。",
+              "好的，我把您的户型和预算范围转给设计师，方案出来后第一时间通知您。",
+              "施工相关问题我先记录，项目经理会与您确认具体安排。"
+            ],
+            csDemoHint: "演示回复 · 正式环境将接入排班与项目进度",
+            leads: [
+              {
+                id: "home-1", name: "示例客户D · 两居室厨卫翻新", stage: "量房预约", last: "2 天前",
+                note: "短视频平台留言 · 周末有空 · 电话 138-0000-0004（虚构）", status: "todo",
+                suggest: "您好，上次您咨询的厨卫翻新，设计师本周六上午 10:00 或下午 14:00 可以上门量房，约 40 分钟。确认后我把设计师联系方式和到访须知发您。",
+                timeline: [
+                  { t: "今天 10:02", text: "智能体：量房预约提醒已生成" },
+                  { t: "2 天前", text: "顾问：电话沟通户型与需求" },
+                  { t: "3 天前", text: "线索入库 · 来源短视频平台" }
+                ]
+              },
+              {
+                id: "home-2", name: "示例客户E · 定制柜方案报价", stage: "方案/报价", last: "昨天",
+                note: "到店咨询 · 关注板材环保等级 · 电话 139-0000-0005（虚构）", status: "run",
+                suggest: "您好，定制柜初版方案和分项报价已出，含板材型号与环保等级说明（以检测报告为准）。方便的话约个时间到店或视频过一遍，需要调整的地方当场改。",
+                timeline: [
+                  { t: "昨天 19:10", text: "已发送方案与报价，等待回复" },
+                  { t: "上周", text: "量房完成 · 设计师出初稿" }
+                ]
+              },
+              {
+                id: "home-3", name: "示例客户F · 水电节点验收通知", stage: "施工跟进", last: "3 天前",
+                note: "已签约 · 水电阶段 · 电话 137-0000-0006（虚构）", status: "done",
+                suggest: "您好，水电改造已完工，明天上午 10:00 项目经理约您现场验收水电节点，如时间不便请回复改约。",
+                timeline: [
+                  { t: "3 天前", text: "业主已确认验收时间" },
+                  { t: "4 天前", text: "智能体：发送节点验收通知" }
+                ]
+              }
+            ]
+          },
+          en: {
+            salesDesk: "Desk · Home renovation example",
+            salesNote: "Home renovation example: lead → site measure → design/quote → contract → build follow-up. The agent reminds measurements, design follow-ups, and build milestones; quotes follow the formal proposal.",
+            stages: ["Lead", "Site measure", "Design/quote", "Contract", "Build follow-up"],
+            csMsg1: "Hi — renovation advisor assistant (example). I can book a site measurement, check build milestones, or connect you to a designer.",
+            csMsg2: "Can someone measure on the weekend?",
+            csMsg3: "Yes — Saturday 10:00 and 14:00 are open; measuring takes about 40 minutes. The designer will contact you once confirmed.",
+            csHint3: "Synced with designer roster · quotes follow the formal proposal",
+            csReplies: [
+              "Noted. To move the measurement, just tell me a time window.",
+              "OK — I’ll pass your floor plan and budget range to the designer and notify you when the design is ready.",
+              "I’ll log the build question; the project manager will confirm the details with you."
+            ],
+            csDemoHint: "Demo reply · production ties to rosters and project progress",
+            leads: [
+              {
+                id: "home-1", name: "Sample client D · kitchen & bath refresh", stage: "Site measure", last: "2 days ago",
+                note: "Short-video comment · free on weekends · Tel 138-0000-0004 (fictional)", status: "todo",
+                suggest: "Hi — for the kitchen & bath refresh, our designer can measure on-site Sat 10:00 or 14:00 (about 40 min). Confirm and I’ll send the designer’s contact and visit notes.",
+                timeline: [
+                  { t: "Today 10:02", text: "Agent: site-measure reminder created" },
+                  { t: "2 days ago", text: "Advisor: call about layout and needs" },
+                  { t: "3 days ago", text: "Lead in · short-video platform" }
+                ]
+              },
+              {
+                id: "home-2", name: "Sample client E · custom cabinet quote", stage: "Design/quote", last: "Yesterday",
+                note: "Walk-in · asks about board emission grade · Tel 139-0000-0005 (fictional)", status: "run",
+                suggest: "Hi — the first cabinet design and itemized quote are ready, with board model and emission grade notes (per the test report). Want to review in-store or by video? We can adjust on the spot.",
+                timeline: [
+                  { t: "Yesterday 19:10", text: "Design and quote sent, awaiting reply" },
+                  { t: "Last week", text: "Measured · designer drafted v1" }
+                ]
+              },
+              {
+                id: "home-3", name: "Sample client F · plumbing/electrical check", stage: "Build follow-up", last: "3 days ago",
+                note: "Contracted · plumbing/electrical phase · Tel 137-0000-0006 (fictional)", status: "done",
+                suggest: "Hi — plumbing and electrical work is finished. The project manager would like to walk the milestone check with you tomorrow at 10:00; reply to reschedule if needed.",
+                timeline: [
+                  { t: "3 days ago", text: "Owner confirmed inspection time" },
+                  { t: "4 days ago", text: "Agent: sent milestone check notice" }
+                ]
+              }
+            ]
+          }
+        },
+        clinic: {
+          zh: {
+            salesDesk: "跟进台 · 诊所/医美示例",
+            salesNote: "诊所/医美示例：咨询登记 → 预约面诊 → 到诊提醒 → 转接工作人员 → 复诊预约。智能体只做预约提醒、面诊排期和转接工作人员。",
+            sceneNotice: "医疗问题由医生本人解答 · 助手不回答医疗问题、不代替医生，也不介绍诊疗项目；仅负责预约提醒、面诊排期与转接工作人员。",
+            stages: ["咨询登记", "预约面诊", "到诊提醒", "转接工作人员", "复诊预约"],
+            csMsg1: "您好，我是诊所预约助手（示例）。可以预约面诊、提醒到诊时间，或为您转接工作人员；医疗问题由医生本人解答。",
+            csMsg2: "这周能约面诊吗？",
+            csMsg3: "可以，本周二 18:30、周四 19:00 有空档。请回复您方便的时间，我为您登记。",
+            csHint3: "预约助手 · 不回答医疗问题，由医生本人解答",
+            csReplies: [
+              "已为您记录。若需改约，请告诉我期望的时间段。",
+              "这个问题涉及医疗专业判断，助手无法解答。已为您转接工作人员，由医生本人解答。",
+              "好的，我先帮您登记预约，工作人员确认后会与您联系。"
+            ],
+            csDemoHint: "演示回复 · 医疗问题一律转工作人员，由医生本人解答",
+            leads: [
+              {
+                id: "clinic-1", name: "示例客户G · 预约面诊", stage: "预约面诊", last: "2 天前",
+                note: "小程序留言 · 希望工作日晚间 · 电话 138-0000-0007（虚构）", status: "todo",
+                suggest: "您好，已收到您的面诊预约需求。本周二 18:30、周四 19:00 有空档，请回复选择。您的具体问题将由医生面诊时本人解答，我这边只负责安排时间。",
+                timeline: [
+                  { t: "今天 09:30", text: "智能体：面诊排期提醒已生成" },
+                  { t: "2 天前", text: "线索入库 · 来源小程序留言" }
+                ]
+              },
+              {
+                id: "clinic-2", name: "示例客户H · 明日到诊提醒", stage: "到诊提醒", last: "昨天",
+                note: "已预约明日 10:00 · 首次到诊 · 电话 139-0000-0008（虚构）", status: "run",
+                suggest: "您好，提醒您明天上午 10:00 的面诊预约。请携带身份证件准时到诊，地址与停车说明稍后发您；如需改约请提前回复，我帮您调整时间。",
+                timeline: [
+                  { t: "昨天 18:00", text: "已发送到诊提醒，等待确认" },
+                  { t: "3 天前", text: "前台：登记面诊预约" }
+                ]
+              },
+              {
+                id: "clinic-3", name: "示例客户I · 咨询转接工作人员", stage: "转接工作人员", last: "4 天前",
+                note: "客户提出医疗相关问题 · 已转前台 · 电话 137-0000-0009（虚构）", status: "done",
+                suggest: "您好，您提到的问题涉及医疗专业判断，助手无法解答。已为您转接诊所工作人员，将安排医生本人为您解答，请留意来电或消息。",
+                timeline: [
+                  { t: "4 天前", text: "前台已接手，安排医生本人回复" },
+                  { t: "4 天前", text: "智能体：识别为医疗问题，转接工作人员" }
+                ]
+              }
+            ]
+          },
+          en: {
+            salesDesk: "Desk · Clinic / Aesthetics example",
+            salesNote: "Clinic / aesthetics example: inquiry → consultation booking → visit reminder → staff hand-off → follow-up visit. The agent only handles reminders, scheduling, and hand-offs to staff.",
+            sceneNotice: "Medical questions are answered by the doctor in person · The assistant does not answer medical questions, does not stand in for a doctor, and does not discuss treatments; it only handles appointment reminders, consultation scheduling, and staff hand-off.",
+            stages: ["Inquiry", "Consult booking", "Visit reminder", "Staff hand-off", "Follow-up visit"],
+            csMsg1: "Hi — clinic booking assistant (example). I can book a consultation, remind you of your visit, or connect you to staff; medical questions are answered by the doctor in person.",
+            csMsg2: "Can I book a consultation this week?",
+            csMsg3: "Yes — Tue 18:30 and Thu 19:00 are open. Reply with the time that suits you and I’ll book it.",
+            csHint3: "Booking assistant · no medical answers; the doctor answers in person",
+            csReplies: [
+              "Noted. To reschedule, just tell me a preferred time window.",
+              "That needs a medical professional — the assistant can’t answer it. I’ve handed you to staff; the doctor will answer in person.",
+              "OK, I’ll log the booking; staff will contact you once confirmed."
+            ],
+            csDemoHint: "Demo reply · all medical questions go to staff and the doctor",
+            leads: [
+              {
+                id: "clinic-1", name: "Sample client G · consultation booking", stage: "Consult booking", last: "2 days ago",
+                note: "Mini-program message · prefers weekday evenings · Tel 138-0000-0007 (fictional)", status: "todo",
+                suggest: "Hi — we received your consultation request. Tue 18:30 and Thu 19:00 are open; please reply with your choice. Your questions will be answered by the doctor in person — I only arrange the time.",
+                timeline: [
+                  { t: "Today 09:30", text: "Agent: scheduling reminder created" },
+                  { t: "2 days ago", text: "Lead in · mini-program message" }
+                ]
+              },
+              {
+                id: "clinic-2", name: "Sample client H · visit reminder for tomorrow", stage: "Visit reminder", last: "Yesterday",
+                note: "Booked tomorrow 10:00 · first visit · Tel 139-0000-0008 (fictional)", status: "run",
+                suggest: "Hi — a reminder of your consultation tomorrow at 10:00. Please bring ID and arrive on time; address and parking notes to follow. Reply in advance if you need to reschedule.",
+                timeline: [
+                  { t: "Yesterday 18:00", text: "Visit reminder sent, awaiting confirmation" },
+                  { t: "3 days ago", text: "Front desk: booking logged" }
+                ]
+              },
+              {
+                id: "clinic-3", name: "Sample client I · handed off to staff", stage: "Staff hand-off", last: "4 days ago",
+                note: "Asked a medical question · passed to front desk · Tel 137-0000-0009 (fictional)", status: "done",
+                suggest: "Hi — your question needs a medical professional, so the assistant can’t answer it. I’ve passed it to clinic staff and the doctor will reply to you in person; please watch for a call or message.",
+                timeline: [
+                  { t: "4 days ago", text: "Front desk took over; doctor to reply in person" },
+                  { t: "4 days ago", text: "Agent: flagged as medical question, handed to staff" }
+                ]
+              }
+            ]
+          }
+        }
+      };
+
+      var SCENE_KEYS = ["law", "home", "clinic"];
+      var scene = "";
+      try {
+        var qs = new URLSearchParams(window.location.search).get("scene");
+        if (qs && SCENE_KEYS.indexOf(qs) !== -1) scene = qs;
+      } catch (e) {}
+
+      var _tCache = {};
+      function t() {
+        var base = I18N[lang] || I18N.zh;
+        if (!scene || !SCENES[scene]) return base;
+        var key = scene + ":" + lang;
+        if (!_tCache[key]) _tCache[key] = Object.assign({}, base, SCENES[scene][lang === "en" ? "en" : "zh"]);
+        return _tCache[key];
+      }
+      function sceneLeadsZh() {
+        return (scene && SCENES[scene]) ? SCENES[scene].zh.leads : I18N.zh.leads;
+      }
 
       function statusLabel(status) {
         var d = t();
@@ -1072,7 +1462,7 @@
       function ensureStatus(id) {
         if (!leadStatus[id]) {
           var L = null;
-          var base = I18N.zh.leads;
+          var base = sceneLeadsZh();
           for (var i = 0; i < base.length; i++) if (base[i].id === id) L = base[i];
           leadStatus[id] = { status: L ? L.status : "todo", runtimeEvents: [] };
         }
@@ -1128,6 +1518,42 @@
         });
         document.querySelectorAll(".lang-toggle button").forEach(function (btn) {
           btn.setAttribute("aria-pressed", btn.getAttribute("data-lang") === lang ? "true" : "false");
+        });
+        document.querySelectorAll("#scene-bar button").forEach(function (btn) {
+          btn.setAttribute("aria-pressed", (btn.getAttribute("data-scene") || "") === scene ? "true" : "false");
+        });
+        document.querySelectorAll(".scene-notice").forEach(function (el) {
+          if (d.sceneNotice) { el.textContent = d.sceneNotice; el.removeAttribute("hidden"); }
+          else { el.textContent = ""; el.setAttribute("hidden", ""); }
+        });
+        renderPipeline();
+      }
+
+      function renderPipeline() {
+        var el = document.getElementById("sales-pipeline");
+        if (!el) return;
+        var d = t();
+        el.innerHTML = "";
+        if (!d.stages || !d.stages.length) { el.setAttribute("hidden", ""); return; }
+        el.removeAttribute("hidden");
+        el.setAttribute("aria-label", d.pipelineLabel);
+        var lab = document.createElement("span");
+        lab.className = "pipeline-label";
+        lab.textContent = d.pipelineLabel;
+        el.appendChild(lab);
+        d.stages.forEach(function (st, i) {
+          if (i > 0) {
+            var a = document.createElement("span");
+            a.className = "pipeline-arrow";
+            a.setAttribute("aria-hidden", "true");
+            a.textContent = "→";
+            el.appendChild(a);
+          }
+          var n = d.leads.filter(function (L) { return L.stage === st; }).length;
+          var s = document.createElement("span");
+          s.className = "pipeline-step" + (n ? " has" : "");
+          s.textContent = n ? st + " · " + n : st;
+          el.appendChild(s);
         });
       }
 
@@ -1418,10 +1844,41 @@
         });
       });
 
-      /* init status map from zh defaults */
-      I18N.zh.leads.forEach(function (L) {
-        leadStatus[L.id] = { status: L.status, runtimeEvents: [] };
+      function initLeadStatus() {
+        leadStatus = {};
+        sceneLeadsZh().forEach(function (L) {
+          leadStatus[L.id] = { status: L.status, runtimeEvents: [] };
+        });
+      }
+
+      function setScene(next) {
+        if (SCENE_KEYS.indexOf(next) === -1) next = "";
+        scene = next;
+        try {
+          var url = new URL(window.location.href);
+          if (scene) url.searchParams.set("scene", scene);
+          else url.searchParams.delete("scene");
+          window.history.replaceState(null, "", url.toString());
+        } catch (e) {}
+        initLeadStatus();
+        currentId = null;
+        /* drop demo messages typed in the previous scene */
+        chat.querySelectorAll(".msg").forEach(function (m, i) { if (i > 2) m.remove(); });
+        replyIdx = 0;
+        applyStaticI18n();
+        rebuildLeadsFromLang();
+        showSalesView("list");
+        renderList();
+      }
+
+      document.querySelectorAll("#scene-bar button").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          setScene(btn.getAttribute("data-scene") || "");
+        });
       });
+
+      /* init status map from current scene's zh defaults */
+      initLeadStatus();
 
       setLang(lang);
     })();
