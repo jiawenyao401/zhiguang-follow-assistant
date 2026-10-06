@@ -767,6 +767,8 @@
                 <button type="button" data-scene="clinic" aria-pressed="false" data-i18n="sceneClinic">诊所/医美</button>
                 <button type="button" data-scene="moving" aria-pressed="false" data-i18n="sceneMoving">家政/搬家</button>
                 <button type="button" data-scene="crossborder" aria-pressed="false" data-i18n="sceneCrossborder">跨境电商</button>
+                <button type="button" data-scene="edu" aria-pressed="false" data-i18n="sceneEdu">教育培训</button>
+                <button type="button" data-scene="fitout" aria-pressed="false" data-i18n="sceneFitout">装修·工装</button>
               </div>
               <p class="agent-note" data-i18n="salesNote">点击线索进入详情 → 查看建议话术 → 标记完成。智能体按阶段提醒回访，销售确认后一键处理。</p>
               <p class="scene-notice" data-i18n="sceneNotice" hidden></p>
@@ -979,7 +981,7 @@
             "这个问题我先按知识库答复；若涉及退款，将为您转人工。"
           ],
           csDemoHint: "演示回复 · 正式环境将接入门店知识库",
-          sceneBarLabel: "行业示例", sceneDefault: "通用", sceneLaw: "律所/代账", sceneHome: "装修家居", sceneClinic: "诊所/医美", sceneMoving: "家政/搬家", sceneCrossborder: "跨境电商",
+          sceneBarLabel: "行业示例", sceneDefault: "通用", sceneLaw: "律所/代账", sceneHome: "装修家居", sceneClinic: "诊所/医美", sceneMoving: "家政/搬家", sceneCrossborder: "跨境电商", sceneEdu: "教育培训", sceneFitout: "装修·工装",
           pipelineLabel: "跟进阶段",
           leads: [
             {
@@ -1077,7 +1079,7 @@
             "I’ll answer from the knowledge base; refunds escalate to a human."
           ],
           csDemoHint: "Demo reply · production ties to store knowledge base",
-          sceneBarLabel: "Industry examples", sceneDefault: "General", sceneLaw: "Law / Accounting", sceneHome: "Home reno", sceneClinic: "Clinic / Aesthetics", sceneMoving: "Home services / Moving", sceneCrossborder: "Cross-border e-com",
+          sceneBarLabel: "Industry examples", sceneDefault: "General", sceneLaw: "Law / Accounting", sceneHome: "Home reno", sceneClinic: "Clinic / Aesthetics", sceneMoving: "Home services / Moving", sceneCrossborder: "Cross-border e-com", sceneEdu: "Education & training", sceneFitout: "Commercial fit-out",
           pipelineLabel: "Pipeline",
           leads: [
             {
@@ -1124,7 +1126,7 @@
         }
       };
 
-      /* Industry scene presets (?scene=law|decor|clinic|moving|crossborder; ?scene=home is an alias of decor). All data is fictional example data. */
+      /* Industry scene presets (?scene=law|decor|clinic|moving|crossborder|edu|fitout; ?scene=home is an alias of decor). All data is fictional example data. */
       var SCENES = {
         law: {
           zh: {
@@ -1587,10 +1589,198 @@
               }
             ]
           }
+        },
+        edu: {
+          zh: {
+            salesDesk: "跟进台 · 教育培训示例",
+            salesNote: "教育培训示例（成人职场/技能课程）：咨询登记 → 课程/需求确认 → 试听预约 → 报名跟进 → 课后回访。智能体提醒试听排期、报名回访和课后回访，课程安排以机构确认为准。",
+            sceneNotice: "退费、合同问题由工作人员处理 · 助手不对学习效果、提分、录取、通过率、证书或就业结果作任何承诺；仅负责成人课程的咨询登记、试听预约、报名跟进与课后回访，退费/合同问题转接工作人员。",
+            stages: ["咨询登记", "课程/需求确认", "试听预约", "报名跟进", "课后回访"],
+            csMsg1: "您好，我是成人课程咨询助手（示例）。可以登记课程咨询、预约试听，或为您转接课程顾问；退费、合同问题由工作人员处理。",
+            csMsg2: "职场英语有下班后的班吗？能先试听吗？",
+            csMsg3: "有的，周二、周四 19:00 有职场英语班可试听。请回复您方便的时间，我先为您登记，课程顾问会再与您确认。",
+            csHint3: "已登记咨询 · 不承诺学习效果或证书结果，退费/合同问题转人工",
+            csReplies: [
+              "已记录。需要改约试听时间的话，告诉我期望的时间段即可。",
+              "退费、合同相关问题助手无法答复，已为您转接工作人员。",
+              "好的，我把您的学习需求和上课时间偏好转给课程顾问，确认后通知您。"
+            ],
+            csDemoHint: "演示回复 · 退费/合同问题一律转工作人员",
+            leads: [
+              {
+                id: "edu-1", name: "示例客户P · 成人职场英语试听预约", stage: "试听预约", last: "2 天前",
+                note: "公众号咨询 · 在职 · 工作日下班后方便 · 电话 138-0000-0016（虚构）", status: "todo",
+                suggest: "您好，上次您咨询的成人职场英语课（邮件与会议沟通方向），本周二或周四 19:00 有试听名额，约 45 分钟。您回复方便的时间，我帮您登记，并把上课地址和试听须知发您。",
+                timeline: [
+                  { t: "今天 09:50", text: "智能体：试听排期提醒已生成" },
+                  { t: "2 天前", text: "顾问：电话了解学习需求与上课时间" },
+                  { t: "3 天前", text: "线索入库 · 来源公众号咨询" }
+                ]
+              },
+              {
+                id: "edu-2", name: "示例客户Q · 成人职业技能课程咨询", stage: "课程/需求确认", last: "昨天",
+                note: "网站留言 · 在职成人 · 想了解办公软件周末班 · 电话 138-0000-0017（虚构）", status: "run",
+                suggest: "您好，已收到您对办公软件技能课程的咨询。周末班的课程安排、课时和费用说明我整理好发您（以正式报名表为准）。您方便的话约个时间电话，顾问为您介绍课程内容。",
+                timeline: [
+                  { t: "昨天 18:20", text: "已发送课程安排说明，等待回复" },
+                  { t: "昨天 17:45", text: "线索入库 · 来源网站留言" }
+                ]
+              },
+              {
+                id: "edu-3", name: "示例客户R · 首课后回访", stage: "课后回访", last: "3 天前",
+                note: "已报名 · 上完第一节课 · 电话 138-0000-0018（虚构）", status: "done",
+                suggest: "您好，第一节课上完感觉怎么样？上课时间、进度如有需要调整的地方，回复我即可，我转给课程顾问跟进。",
+                timeline: [
+                  { t: "3 天前", text: "已记录上课时间调整需求，转课程顾问" },
+                  { t: "4 天前", text: "智能体：发送首课后回访消息" }
+                ]
+              }
+            ]
+          },
+          en: {
+            salesDesk: "Desk · Education & training example",
+            salesNote: "Education & training example (adult workplace/skills courses): inquiry → course/needs → trial class → enrollment follow-up → after-class check-in. The agent reminds trial scheduling, enrollment follow-ups, and check-ins; course arrangements follow the school’s confirmation.",
+            sceneNotice: "Refund and contract questions are handled by staff · The assistant makes no promises about learning results, score gains, admissions, pass rates, certificates, or job outcomes; for adult courses it only logs inquiries, books trial classes, follows up on enrollment, and checks in after class, handing refund/contract questions to staff.",
+            stages: ["Inquiry", "Course/needs", "Trial class", "Enrollment", "Check-in"],
+            csMsg1: "Hi — adult course inquiry assistant (example). I can log a course inquiry, book a trial class, or connect you to a course advisor; refund and contract questions are handled by staff.",
+            csMsg2: "Do you have after-work classes for workplace English? Can I try one first?",
+            csMsg3: "Yes — workplace English classes on Tue and Thu at 19:00 are open for trial. Reply with the time that suits you and I’ll log it; a course advisor will confirm.",
+            csHint3: "Inquiry logged · no promises on results or certificates; refunds/contracts go to staff",
+            csReplies: [
+              "Noted. To move the trial class, just tell me a preferred time window.",
+              "The assistant can’t answer refund or contract questions — I’ve handed this to staff.",
+              "OK — I’ll pass your learning needs and schedule preferences to a course advisor and let you know once confirmed."
+            ],
+            csDemoHint: "Demo reply · refund/contract questions always go to staff",
+            leads: [
+              {
+                id: "edu-1", name: "Sample client P · adult workplace English trial", stage: "Trial class", last: "2 days ago",
+                note: "Official-account inquiry · working adult · weekday after work · Tel 138-0000-0016 (fictional)", status: "todo",
+                suggest: "Hi — for the adult workplace English course (email and meeting communication) you asked about, trial seats are open Tue or Thu at 19:00 (about 45 min). Reply with a time and I’ll book it and send the address and trial notes.",
+                timeline: [
+                  { t: "Today 09:50", text: "Agent: trial scheduling reminder created" },
+                  { t: "2 days ago", text: "Advisor: call about learning needs and schedule" },
+                  { t: "3 days ago", text: "Lead in · official-account inquiry" }
+                ]
+              },
+              {
+                id: "edu-2", name: "Sample client Q · adult vocational skills inquiry", stage: "Course/needs", last: "Yesterday",
+                note: "Website message · working adult · asks about weekend office-software classes · Tel 138-0000-0017 (fictional)", status: "run",
+                suggest: "Hi — we received your inquiry about the office-software skills course. I’ll send the weekend schedule, class hours, and fee notes (per the formal enrollment form). Free for a quick call so an advisor can walk you through the course content?",
+                timeline: [
+                  { t: "Yesterday 18:20", text: "Course schedule sent, awaiting reply" },
+                  { t: "Yesterday 17:45", text: "Lead in · website message" }
+                ]
+              },
+              {
+                id: "edu-3", name: "Sample client R · first-class check-in", stage: "Check-in", last: "3 days ago",
+                note: "Enrolled · finished first class · Tel 138-0000-0018 (fictional)", status: "done",
+                suggest: "Hi — how did the first class go? If the time or pace needs adjusting, just reply and I’ll pass it to the course advisor.",
+                timeline: [
+                  { t: "3 days ago", text: "Schedule adjustment request logged; passed to course advisor" },
+                  { t: "4 days ago", text: "Agent: sent first-class check-in" }
+                ]
+              }
+            ]
+          }
+        },
+        fitout: {
+          zh: {
+            salesDesk: "跟进台 · 装修·工装示例",
+            salesNote: "装修·工装示例（办公室/门店/餐饮）：需求登记 → 现场勘测预约 → 方案/报价跟进 → 施工排期 → 验收回访。智能体提醒勘测、报价回访、排期沟通和验收回访；价格以正式报价单为准，工期由项目同事确认。",
+            sceneNotice: "资质证照、报建、消防验收、工期与合规问题由工作人员处理 · 助手不对资质证照、报建、消防验收、施工工期或合规结果作任何判断或承诺；仅负责需求登记、勘测预约、报价/排期跟进与验收回访，相关问题转接工作人员。价格以正式报价单为准。",
+            stages: ["需求登记", "现场勘测预约", "方案/报价跟进", "施工排期", "验收回访"],
+            csMsg1: "您好，我是工装顾问助手（示例）。可以登记办公室、门店或餐饮空间的装修需求、预约现场勘测，或为您转接项目同事。",
+            csMsg2: "一个 200 平的办公室，大概多久能出报价？",
+            csMsg3: "需要先现场勘测，本周三、周五上午有空档。勘测后项目同事会出方案和分项报价，价格以正式报价单为准。",
+            csHint3: "已登记需求 · 资质/消防/工期/合规问题转人工，价格以正式报价单为准",
+            csReplies: [
+              "已记录。需要改约勘测时间的话，告诉我期望的时间段即可。",
+              "资质证照、消防验收、工期或合规问题助手无法判断，已为您转接项目同事。",
+              "好的，我把面积、用途和时间需求转给项目同事，方案和报价出来后第一时间通知您。"
+            ],
+            csDemoHint: "演示回复 · 资质/消防/工期/合规问题一律转工作人员",
+            leads: [
+              {
+                id: "fitout-1", name: "示例客户S · 办公室装修勘测预约", stage: "现场勘测预约", last: "2 天前",
+                note: "网站询价 · 约 200 平 · 计划下季度入驻 · 电话 138-0000-0019（虚构）", status: "todo",
+                suggest: "您好，您咨询的办公室装修需要先到现场勘测，项目同事本周三或周五上午可以上门，约 1 小时。确认后我把同事联系方式和勘测前需准备的平面图清单发您。",
+                timeline: [
+                  { t: "今天 10:20", text: "智能体：勘测预约提醒已生成" },
+                  { t: "2 天前", text: "顾问：电话了解面积与时间需求" },
+                  { t: "3 天前", text: "线索入库 · 来源网站询价" }
+                ]
+              },
+              {
+                id: "fitout-2", name: "示例客户T · 餐饮门店方案报价", stage: "方案/报价跟进", last: "昨天",
+                note: "到访咨询 · 临街门店翻新 · 电话 138-0000-0020（虚构）", status: "run",
+                suggest: "您好，门店翻新的初版方案和分项报价已发您，价格以正式报价单为准。方便的话约个时间到现场或视频过一遍，需要调整的地方当场记下。排烟、消防验收和工期安排由项目同事与您单独沟通。",
+                timeline: [
+                  { t: "昨天 18:50", text: "已发送方案与报价，等待回复" },
+                  { t: "上周", text: "现场勘测完成 · 出初版方案" }
+                ]
+              },
+              {
+                id: "fitout-3", name: "示例客户U · 零售店完工验收回访", stage: "验收回访", last: "3 天前",
+                note: "已完工 · 门店已开始营业 · 电话 138-0000-0021（虚构）", status: "done",
+                suggest: "您好，门店完工已有一周，想跟您确认一下使用中有没有需要调整或修补的地方。有的话回复照片即可，我安排项目同事跟进。",
+                timeline: [
+                  { t: "3 天前", text: "客户回复暂无问题，回访结束" },
+                  { t: "4 天前", text: "智能体：发送完工回访消息" }
+                ]
+              }
+            ]
+          },
+          en: {
+            salesDesk: "Desk · Commercial fit-out example",
+            salesNote: "Commercial fit-out example (offices, shops, restaurants): request → site survey → design/quote → build schedule → handover check-in. The agent reminds surveys, quote follow-ups, scheduling calls, and handover check-ins; prices are per the formal quotation and timelines are confirmed by the project team.",
+            sceneNotice: "Qualification/licence, permit, fire-safety acceptance, schedule, and compliance questions are handled by staff · The assistant makes no judgments or promises about qualifications or licences, permits, fire-safety acceptance, construction schedules, or compliance outcomes; it only logs requests, books site surveys, follows up on quotes and scheduling, and checks in after handover, handing those questions to staff. Prices are per the formal quotation.",
+            stages: ["Request", "Site survey", "Design/quote", "Build schedule", "Handover check-in"],
+            csMsg1: "Hi — fit-out advisor assistant (example). I can log a request for an office, shop, or restaurant space, book a site survey, or connect you to the project team.",
+            csMsg2: "How long until we get a quote for a 200 m² office?",
+            csMsg3: "We start with a site survey — Wed or Fri morning is open this week. After the survey the project team prepares a design and itemized quote; prices are per the formal quotation.",
+            csHint3: "Request logged · licence/fire/schedule/compliance questions go to staff; prices per the formal quotation",
+            csReplies: [
+              "Noted. To move the survey, just tell me a preferred time window.",
+              "The assistant can’t assess licence, fire-safety acceptance, schedule, or compliance questions — I’ve handed this to the project team.",
+              "OK — I’ll pass the area, use, and timing needs to the project team and notify you as soon as the design and quote are ready."
+            ],
+            csDemoHint: "Demo reply · licence/fire/schedule/compliance questions always go to staff",
+            leads: [
+              {
+                id: "fitout-1", name: "Sample client S · office fit-out site survey", stage: "Site survey", last: "2 days ago",
+                note: "Website inquiry · ~200 m² · moving in next quarter · Tel 138-0000-0019 (fictional)", status: "todo",
+                suggest: "Hi — your office fit-out starts with a site survey; the project team can come Wed or Fri morning (about 1 hour). Confirm and I’ll send their contact and the floor-plan checklist to prepare.",
+                timeline: [
+                  { t: "Today 10:20", text: "Agent: site-survey reminder created" },
+                  { t: "2 days ago", text: "Advisor: call about area and timing needs" },
+                  { t: "3 days ago", text: "Lead in · website inquiry" }
+                ]
+              },
+              {
+                id: "fitout-2", name: "Sample client T · restaurant design & quote", stage: "Design/quote", last: "Yesterday",
+                note: "Walk-in · street-front shop refresh · Tel 138-0000-0020 (fictional)", status: "run",
+                suggest: "Hi — the first design and itemized quote for your shop refresh are in your inbox; prices are per the formal quotation. Want to review on-site or by video? We’ll note changes on the spot. Ventilation, fire-safety acceptance, and scheduling will be discussed separately with the project team.",
+                timeline: [
+                  { t: "Yesterday 18:50", text: "Design and quote sent, awaiting reply" },
+                  { t: "Last week", text: "Site survey done · v1 design drafted" }
+                ]
+              },
+              {
+                id: "fitout-3", name: "Sample client U · retail shop handover check-in", stage: "Handover check-in", last: "3 days ago",
+                note: "Finished · shop now open · Tel 138-0000-0021 (fictional)", status: "done",
+                suggest: "Hi — it’s been a week since handover. Is there anything that needs adjusting or touching up? Just reply with a photo and I’ll have the project team follow up.",
+                timeline: [
+                  { t: "3 days ago", text: "Client reported no issues; check-in closed" },
+                  { t: "4 days ago", text: "Agent: sent handover check-in" }
+                ]
+              }
+            ]
+          }
         }
       };
 
-      var SCENE_KEYS = ["law", "decor", "clinic", "moving", "crossborder"];
+      var SCENE_KEYS = ["law", "decor", "clinic", "moving", "crossborder", "edu", "fitout"];
       var SCENE_ALIASES = { home: "decor" };
       var scene = "";
       try {
