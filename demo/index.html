@@ -765,6 +765,8 @@
                 <button type="button" data-scene="law" aria-pressed="false" data-i18n="sceneLaw">律所/代账</button>
                 <button type="button" data-scene="decor" aria-pressed="false" data-i18n="sceneHome">装修家居</button>
                 <button type="button" data-scene="clinic" aria-pressed="false" data-i18n="sceneClinic">诊所/医美</button>
+                <button type="button" data-scene="moving" aria-pressed="false" data-i18n="sceneMoving">家政/搬家</button>
+                <button type="button" data-scene="crossborder" aria-pressed="false" data-i18n="sceneCrossborder">跨境电商</button>
               </div>
               <p class="agent-note" data-i18n="salesNote">点击线索进入详情 → 查看建议话术 → 标记完成。智能体按阶段提醒回访，销售确认后一键处理。</p>
               <p class="scene-notice" data-i18n="sceneNotice" hidden></p>
@@ -977,7 +979,7 @@
             "这个问题我先按知识库答复；若涉及退款，将为您转人工。"
           ],
           csDemoHint: "演示回复 · 正式环境将接入门店知识库",
-          sceneBarLabel: "行业示例", sceneDefault: "通用", sceneLaw: "律所/代账", sceneHome: "装修家居", sceneClinic: "诊所/医美",
+          sceneBarLabel: "行业示例", sceneDefault: "通用", sceneLaw: "律所/代账", sceneHome: "装修家居", sceneClinic: "诊所/医美", sceneMoving: "家政/搬家", sceneCrossborder: "跨境电商",
           pipelineLabel: "跟进阶段",
           leads: [
             {
@@ -1075,7 +1077,7 @@
             "I’ll answer from the knowledge base; refunds escalate to a human."
           ],
           csDemoHint: "Demo reply · production ties to store knowledge base",
-          sceneBarLabel: "Industry examples", sceneDefault: "General", sceneLaw: "Law / Accounting", sceneHome: "Home reno", sceneClinic: "Clinic / Aesthetics",
+          sceneBarLabel: "Industry examples", sceneDefault: "General", sceneLaw: "Law / Accounting", sceneHome: "Home reno", sceneClinic: "Clinic / Aesthetics", sceneMoving: "Home services / Moving", sceneCrossborder: "Cross-border e-com",
           pipelineLabel: "Pipeline",
           leads: [
             {
@@ -1122,7 +1124,7 @@
         }
       };
 
-      /* Industry scene presets (?scene=law|decor|clinic; ?scene=home is an alias of decor). All data is fictional example data. */
+      /* Industry scene presets (?scene=law|decor|clinic|moving|crossborder; ?scene=home is an alias of decor). All data is fictional example data. */
       var SCENES = {
         law: {
           zh: {
@@ -1399,10 +1401,196 @@
               }
             ]
           }
+        },
+        moving: {
+          zh: {
+            salesDesk: "跟进台 · 家政/搬家示例",
+            salesNote: "家政/搬家示例：咨询登记 → 需求确认/估价 → 报价确认 → 预约排期 → 服务回访。智能体提醒估价、报价回访、服务前一天确认和完工回访，价格以确认后的报价单为准。",
+            stages: ["咨询登记", "需求确认/估价", "报价确认", "预约排期", "服务回访"],
+            csMsg1: "您好，我是家政/搬家预约助手（示例）。可以登记搬家或保洁需求、预约视频/上门估价，或为您转接调度同事。",
+            csMsg2: "下周六能搬家吗？两居室，3 楼没电梯。",
+            csMsg3: "下周六上午、下午都还有车。楼层和大件数量会影响价格，我先为您登记，调度同事会联系您约视频或上门估价，价格以确认后的报价单为准。",
+            csHint3: "已登记需求 · 价格以确认后的报价单为准",
+            csReplies: [
+              "已记录。需要改约时间的话，直接告诉我期望的时间段即可。",
+              "好的，我把您的户型、楼层和大件清单转给调度同事，报价单出来后第一时间通知您。",
+              "这个问题我先记录，并为您转接负责同事确认具体安排。"
+            ],
+            csDemoHint: "演示回复 · 正式环境将接入排期与调度表",
+            leads: [
+              {
+                id: "moving-1", name: "示例客户J · 两居室同城搬家报价", stage: "报价确认", last: "2 天前",
+                note: "网站询价 · 有电梯 · 计划本月下旬搬 · 电话 138-0000-0010（虚构）", status: "todo",
+                suggest: "您好，上次视频看过的两居室同城搬家，报价单已按楼层、电梯和大件数量整理好（最终以现场确认为准）。本周六上午、周日下午都还有车，您定好日期回复我，我先帮您预留排期。",
+                timeline: [
+                  { t: "今天 09:40", text: "智能体：报价跟进提醒已生成" },
+                  { t: "2 天前", text: "调度：视频估价后发送报价单" },
+                  { t: "3 天前", text: "线索入库 · 来源网站询价" }
+                ]
+              },
+              {
+                id: "moving-2", name: "示例客户K · 育儿嫂需求沟通", stage: "需求确认/估价", last: "昨天",
+                note: "公众号表单 · 工作日白班 · 电话 138-0000-0011（虚构）", status: "run",
+                suggest: "您好，已记下您对育儿嫂的需求（工作日白班、家中有 1 岁宝宝）。我们整理好 2–3 位阿姨的基本资料后，约您本周三或周四晚上视频面谈，您看哪个时间方便？",
+                timeline: [
+                  { t: "昨天 20:15", text: "已发送面谈时间选项，等待回复" },
+                  { t: "昨天 19:50", text: "线索入库 · 来源公众号表单" }
+                ]
+              },
+              {
+                id: "moving-3", name: "示例客户L · 开荒保洁完工回访", stage: "服务回访", last: "3 天前",
+                note: "已完成服务 · 新房入住前保洁 · 电话 138-0000-0012（虚构）", status: "done",
+                suggest: "您好，昨天的开荒保洁已完成，想跟您确认一下是否有需要补做的地方。有的话回复照片即可，我安排同事跟进。",
+                timeline: [
+                  { t: "3 天前", text: "客户回复无需补做，回访结束" },
+                  { t: "4 天前", text: "智能体：发送完工回访消息" }
+                ]
+              }
+            ]
+          },
+          en: {
+            salesDesk: "Desk · Home services / Moving example",
+            salesNote: "Home services / moving example: inquiry → needs/estimate → quote → scheduling → check-in. The agent reminds estimates, quote follow-ups, day-before confirmations, and post-service check-ins; prices follow the confirmed quote.",
+            stages: ["Inquiry", "Needs/estimate", "Quote", "Scheduling", "Check-in"],
+            csMsg1: "Hi — home services & moving booking assistant (example). I can log a moving or cleaning request, book a video/on-site estimate, or connect you to a dispatcher.",
+            csMsg2: "Can you move us next Saturday? 2 bedrooms, 3rd floor, no elevator.",
+            csMsg3: "Next Saturday still has trucks morning and afternoon. Floors and large items affect the price, so I’ll log your request and a dispatcher will contact you for a video or on-site estimate; prices follow the confirmed quote.",
+            csHint3: "Request logged · prices follow the confirmed quote",
+            csReplies: [
+              "Noted. To change the time, just tell me a preferred window.",
+              "OK — I’ll pass your layout, floor, and large-item list to the dispatcher and notify you as soon as the quote is ready.",
+              "I’ll log that and hand it to the staff member in charge to confirm the details."
+            ],
+            csDemoHint: "Demo reply · production ties to schedules and dispatch",
+            leads: [
+              {
+                id: "moving-1", name: "Sample client J · 2-bedroom local move quote", stage: "Quote", last: "2 days ago",
+                note: "Website inquiry · elevator building · moving later this month · Tel 138-0000-0010 (fictional)", status: "todo",
+                suggest: "Hi — the quote for your 2-bedroom local move is ready, itemized by floor, elevator access, and large items (final price per on-site confirmation). We still have trucks Saturday morning and Sunday afternoon; reply with your date and I’ll hold the slot.",
+                timeline: [
+                  { t: "Today 09:40", text: "Agent: quote follow-up reminder created" },
+                  { t: "2 days ago", text: "Dispatcher: sent quote after video estimate" },
+                  { t: "3 days ago", text: "Lead in · website inquiry" }
+                ]
+              },
+              {
+                id: "moving-2", name: "Sample client K · nanny needs intake", stage: "Needs/estimate", last: "Yesterday",
+                note: "Official-account form · weekday day shift · Tel 138-0000-0011 (fictional)", status: "run",
+                suggest: "Hi — I’ve noted your needs for a nanny (weekday day shift, 1-year-old at home). Once we’ve put together profiles for 2–3 caregivers, could we do a video call Wed or Thu evening? Which suits you?",
+                timeline: [
+                  { t: "Yesterday 20:15", text: "Call options sent, awaiting reply" },
+                  { t: "Yesterday 19:50", text: "Lead in · official-account form" }
+                ]
+              },
+              {
+                id: "moving-3", name: "Sample client L · deep-clean check-in", stage: "Check-in", last: "3 days ago",
+                note: "Service done · pre-move-in deep clean · Tel 138-0000-0012 (fictional)", status: "done",
+                suggest: "Hi — your deep clean was finished yesterday. Is there anything that needs a touch-up? Just reply with a photo and I’ll have a colleague follow up.",
+                timeline: [
+                  { t: "3 days ago", text: "Client replied no touch-up needed; check-in closed" },
+                  { t: "4 days ago", text: "Agent: sent post-service check-in" }
+                ]
+              }
+            ]
+          }
+        },
+        crossborder: {
+          zh: {
+            salesDesk: "跟进台 · 跨境电商示例",
+            salesNote: "跨境电商示例：询盘登记 → 报价跟进 → 寄样确认 → 发货状态提醒 → 转接人工。智能体只做询盘、报价、寄样跟进和发货状态提醒，其他问题转接业务同事。",
+            sceneNotice: "清关、税费、合规问题由业务同事处理 · 助手不对清关、税费或合规结果作任何判断或承诺；仅负责询盘登记、报价/寄样跟进、发货状态提醒与转接人工。",
+            stages: ["询盘登记", "报价跟进", "寄样确认", "发货状态提醒", "转接人工"],
+            csMsg1: "您好，我是询盘接待助手（示例）。可以登记询价、跟进报价和寄样进度、提醒发货状态，或为您转接业务同事。",
+            csMsg2: "500 件起订吗？能先寄样品吗？",
+            csMsg3: "起订量和价格以业务同事的正式报价为准。可以先登记寄样需求，请留下收件信息，业务同事会在 1 个工作日内联系您。",
+            csHint3: "已登记询盘 · 清关/税费/合规问题转人工",
+            csReplies: [
+              "已记录。需要报价的话，告诉我品名、数量和目的地即可。",
+              "清关、税费或合规问题助手无法判断，已为您转接业务同事。",
+              "好的，发货状态有更新时我会提醒您，物流详情以承运方信息为准。"
+            ],
+            csDemoHint: "演示回复 · 清关/税费/合规问题一律转人工",
+            leads: [
+              {
+                id: "crossborder-1", name: "示例客户M · 海外买家询价（收纳盒 500 件）", stage: "报价跟进", last: "2 天前",
+                note: "独立站询盘 · 英文沟通 · 电话 138-0000-0013（虚构）", status: "todo",
+                suggest: "您好（示例），您询价的收纳盒 500 件报价单已发到邮箱，含单价阶梯、起订量和预计交期（以正式报价单为准）。如需先寄样确认，回复收件信息即可，我安排同事处理。",
+                timeline: [
+                  { t: "今天 10:10", text: "智能体：报价跟进提醒已生成" },
+                  { t: "2 天前", text: "业务：发送报价单" },
+                  { t: "3 天前", text: "线索入库 · 来源独立站询盘" }
+                ]
+              },
+              {
+                id: "crossborder-2", name: "示例客户N · 样品寄出跟进", stage: "寄样确认", last: "昨天",
+                note: "样品已寄出 · 等待买家确认 · 电话 138-0000-0014（虚构）", status: "run",
+                suggest: "您好，样品已于昨天寄出，物流单号已发到您的邮箱，最新状态可在承运方网站查看。收到后方便的话告诉我们颜色和尺寸是否符合预期，我再同步给负责同事。",
+                timeline: [
+                  { t: "昨天 16:30", text: "已发送寄样通知与单号，等待确认" },
+                  { t: "4 天前", text: "买家确认寄样地址" }
+                ]
+              },
+              {
+                id: "crossborder-3", name: "示例客户O · 大货发货状态提醒", stage: "发货状态提醒", last: "3 天前",
+                note: "已交承运方 · 买家问到进口税费 · 电话 138-0000-0015（虚构）", status: "done",
+                suggest: "您好，您的订单已交承运方，最新物流状态可在单号页面查看。关于税费的问题助手无法判断，已转给负责同事，会尽快与您联系。",
+                timeline: [
+                  { t: "3 天前", text: "税费问题已转接负责同事" },
+                  { t: "4 天前", text: "智能体：发送发货状态提醒" }
+                ]
+              }
+            ]
+          },
+          en: {
+            salesDesk: "Desk · Cross-border e-commerce example",
+            salesNote: "Cross-border e-commerce example: inquiry → quote → sample → shipment status → staff hand-off. The agent only follows up on inquiries, quotes, and samples, sends shipment-status reminders, and hands other questions to staff.",
+            sceneNotice: "Customs, duty/tax, and compliance questions are handled by staff · The assistant makes no judgments or promises about customs clearance, duties/taxes, or compliance outcomes; it only logs inquiries, follows up on quotes and samples, sends shipment-status reminders, and hands off to staff.",
+            stages: ["Inquiry", "Quote", "Sample", "Shipment status", "Staff hand-off"],
+            csMsg1: "Hi — inquiry assistant (example). I can log a price inquiry, follow up on quotes and samples, remind you of shipment status, or connect you to the account owner.",
+            csMsg2: "Is the MOQ 500 pieces? Can you send a sample first?",
+            csMsg3: "MOQ and pricing follow the account owner’s formal quote. I can log a sample request now — leave your shipping details and the account owner will contact you within 1 business day.",
+            csHint3: "Inquiry logged · customs/duty/compliance questions go to staff",
+            csReplies: [
+              "Noted. For a quote, just tell me the item, quantity, and destination.",
+              "The assistant can’t assess customs, duty, or compliance questions — I’ve handed this to the account owner.",
+              "OK, I’ll remind you when the shipment status updates; carrier tracking is the source of truth."
+            ],
+            csDemoHint: "Demo reply · customs/duty/compliance questions always go to staff",
+            leads: [
+              {
+                id: "crossborder-1", name: "Sample client M · buyer quote request (500 storage boxes)", stage: "Quote", last: "2 days ago",
+                note: "Online-store inquiry · English · Tel 138-0000-0013 (fictional)", status: "todo",
+                suggest: "Hi (sample) — the quote for 500 storage boxes is in your inbox, with tiered unit prices, MOQ, and estimated lead time (per the formal quote). If you’d like a sample first, reply with your shipping details and a colleague will arrange it.",
+                timeline: [
+                  { t: "Today 10:10", text: "Agent: quote follow-up reminder created" },
+                  { t: "2 days ago", text: "Sales: sent quote" },
+                  { t: "3 days ago", text: "Lead in · online-store inquiry" }
+                ]
+              },
+              {
+                id: "crossborder-2", name: "Sample client N · sample shipment follow-up", stage: "Sample", last: "Yesterday",
+                note: "Sample shipped · awaiting buyer feedback · Tel 138-0000-0014 (fictional)", status: "run",
+                suggest: "Hi — your sample shipped yesterday; the tracking number is in your email and the latest status is on the carrier’s site. Once it arrives, let us know whether the color and size match what you expected and I’ll pass it to the account owner.",
+                timeline: [
+                  { t: "Yesterday 16:30", text: "Sample notice and tracking sent, awaiting confirmation" },
+                  { t: "4 days ago", text: "Buyer confirmed sample address" }
+                ]
+              },
+              {
+                id: "crossborder-3", name: "Sample client O · bulk order shipment status", stage: "Shipment status", last: "3 days ago",
+                note: "Handed to carrier · asked about import duties · Tel 138-0000-0015 (fictional)", status: "done",
+                suggest: "Hi — your order has been handed to the carrier; check the tracking page for the latest status. The assistant can’t assess duty questions, so I’ve passed yours to the account owner, who will get back to you.",
+                timeline: [
+                  { t: "3 days ago", text: "Duty question handed to account owner" },
+                  { t: "4 days ago", text: "Agent: sent shipment-status reminder" }
+                ]
+              }
+            ]
+          }
         }
       };
 
-      var SCENE_KEYS = ["law", "decor", "clinic"];
+      var SCENE_KEYS = ["law", "decor", "clinic", "moving", "crossborder"];
       var SCENE_ALIASES = { home: "decor" };
       var scene = "";
       try {
@@ -1524,6 +1712,13 @@
         document.querySelectorAll("#scene-bar button").forEach(function (btn) {
           btn.setAttribute("aria-pressed", (btn.getAttribute("data-scene") || "") === scene ? "true" : "false");
         });
+        /* keep the active scene chip visible on narrow screens (scene bar scrolls horizontally) */
+        var sceneBar = document.getElementById("scene-bar");
+        var sceneOn = sceneBar && sceneBar.querySelector('button[aria-pressed="true"]');
+        if (sceneOn && sceneBar.scrollWidth > sceneBar.clientWidth) {
+          var br = sceneBar.getBoundingClientRect(), ob = sceneOn.getBoundingClientRect();
+          if (ob.right > br.right || ob.left < br.left) sceneBar.scrollLeft += ob.left - br.left - 48;
+        }
         document.querySelectorAll(".scene-notice").forEach(function (el) {
           if (d.sceneNotice) { el.textContent = d.sceneNotice; el.removeAttribute("hidden"); }
           else { el.textContent = ""; el.setAttribute("hidden", ""); }
