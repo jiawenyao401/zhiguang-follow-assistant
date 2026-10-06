@@ -763,6 +763,7 @@
                 <span class="scene-bar-label" data-i18n="sceneBarLabel">行业示例</span>
                 <button type="button" data-scene="" aria-pressed="true" data-i18n="sceneDefault">通用</button>
                 <button type="button" data-scene="law" aria-pressed="false" data-i18n="sceneLaw">律所/代账</button>
+                <button type="button" data-scene="lawfirm" aria-pressed="false" data-i18n="sceneLawfirm">律所</button>
                 <button type="button" data-scene="decor" aria-pressed="false" data-i18n="sceneHome">装修家居</button>
                 <button type="button" data-scene="clinic" aria-pressed="false" data-i18n="sceneClinic">诊所/医美</button>
                 <button type="button" data-scene="moving" aria-pressed="false" data-i18n="sceneMoving">家政/搬家</button>
@@ -981,7 +982,7 @@
             "这个问题我先按知识库答复；若涉及退款，将为您转人工。"
           ],
           csDemoHint: "演示回复 · 正式环境将接入门店知识库",
-          sceneBarLabel: "行业示例", sceneDefault: "通用", sceneLaw: "律所/代账", sceneHome: "装修家居", sceneClinic: "诊所/医美", sceneMoving: "家政/搬家", sceneCrossborder: "跨境电商", sceneEdu: "教育培训", sceneFitout: "装修·工装",
+          sceneBarLabel: "行业示例", sceneDefault: "通用", sceneLaw: "律所/代账", sceneHome: "装修家居", sceneClinic: "诊所/医美", sceneMoving: "家政/搬家", sceneCrossborder: "跨境电商", sceneEdu: "教育培训", sceneFitout: "装修·工装", sceneLawfirm: "律所",
           pipelineLabel: "跟进阶段",
           leads: [
             {
@@ -1079,7 +1080,7 @@
             "I’ll answer from the knowledge base; refunds escalate to a human."
           ],
           csDemoHint: "Demo reply · production ties to store knowledge base",
-          sceneBarLabel: "Industry examples", sceneDefault: "General", sceneLaw: "Law / Accounting", sceneHome: "Home reno", sceneClinic: "Clinic / Aesthetics", sceneMoving: "Home services / Moving", sceneCrossborder: "Cross-border e-com", sceneEdu: "Education & training", sceneFitout: "Commercial fit-out",
+          sceneBarLabel: "Industry examples", sceneDefault: "General", sceneLaw: "Law / Accounting", sceneHome: "Home reno", sceneClinic: "Clinic / Aesthetics", sceneMoving: "Home services / Moving", sceneCrossborder: "Cross-border e-com", sceneEdu: "Education & training", sceneFitout: "Commercial fit-out", sceneLawfirm: "Law firm",
           pipelineLabel: "Pipeline",
           leads: [
             {
@@ -1126,7 +1127,7 @@
         }
       };
 
-      /* Industry scene presets (?scene=law|decor|clinic|moving|crossborder|edu|fitout; ?scene=home is an alias of decor). All data is fictional example data. */
+      /* Industry scene presets (?scene=law|decor|clinic|moving|crossborder|edu|fitout|lawfirm; ?scene=home is an alias of decor). All data is fictional example data. */
       var SCENES = {
         law: {
           zh: {
@@ -1777,10 +1778,104 @@
               }
             ]
           }
+        },
+        lawfirm: {
+          zh: {
+            salesDesk: "跟进台 · 律所示例",
+            salesNote: "律所示例：咨询登记 → 面谈预约 → 案件材料催收 → 律师确认委托 → 进展回访。智能体提醒面谈排期、材料补齐和进展回访；法律意见由律师本人给出，并转律师本人确认委托和收费。",
+            sceneNotice: "法律问题由律师本人解答 · 助手不提供法律意见，不对案件结果作任何预测或承诺，也不报律师费用；仅负责咨询登记、面谈预约、材料催收与进展回访，并转律师本人确认委托和收费。",
+            stages: ["咨询登记", "面谈预约", "案件材料催收", "律师确认委托", "进展回访"],
+            csMsg1: "您好，我是律所前台助手（示例）。可以登记咨询、预约与律师面谈，或发送材料清单；法律问题由律师本人解答。",
+            csMsg2: "想咨询劳动争议，能先预约面谈吗？",
+            csMsg3: "可以。具体法律意见需由律师面谈后本人给出，我先为您登记。周三 10:00、周四 15:00 可预约面谈，请回复您方便的时间。",
+            csHint3: "已登记咨询 · 助手不提供法律意见，由律师本人解答",
+            csReplies: [
+              "已记录。需要预约面谈的话，告诉我方便的时间段即可。",
+              "这个问题需要律师判断，助手无法给出意见，已为您登记并转交律师本人。",
+              "好的，材料清单我稍后发您。助手不报律师费用，委托和收费转律师本人确认。"
+            ],
+            csDemoHint: "演示回复 · 助手不提供法律意见、不预测案件结果、不报费用",
+            leads: [
+              {
+                id: "lawfirm-1", name: "示例客户V · 劳动争议咨询 · 首次面谈预约", stage: "面谈预约", last: "2 天前",
+                note: "网站留言 · 希望工作日下午 · 电话 138-0000-0022（虚构）", status: "todo",
+                suggest: "您好，已收到您关于劳动争议的咨询登记。具体法律意见需由律师面谈后本人给出，我先帮您预约首次面谈：周三 10:00 或周四 15:00，您看哪个方便？可提前准备劳动合同、工资记录和相关沟通记录。",
+                timeline: [
+                  { t: "今天 09:15", text: "智能体：面谈预约提醒已生成" },
+                  { t: "2 天前", text: "前台：电话确认咨询方向" },
+                  { t: "3 天前", text: "线索入库 · 来源网站留言" }
+                ]
+              },
+              {
+                id: "lawfirm-2", name: "示例客户W · 合同纠纷材料清单催收", stage: "案件材料催收", last: "昨天",
+                note: "已面谈 · 材料未齐 · 电话 138-0000-0023（虚构）", status: "run",
+                suggest: "您好，律师列出的材料清单中还差以下几项：合同扫描件、履约往来单据、沟通记录。上传到共享链接后，我会通知律师本人查看。",
+                timeline: [
+                  { t: "昨天 17:30", text: "已发送材料补齐提醒，等待回复" },
+                  { t: "3 天前", text: "律师面谈完成 · 列出材料清单" }
+                ]
+              },
+              {
+                id: "lawfirm-3", name: "示例客户X · 律师确认委托后进展回访", stage: "进展回访", last: "3 天前",
+                note: "律师本人已确认委托 · 电话 138-0000-0024（虚构）", status: "done",
+                suggest: "您好，这是律师确认委托后的第一次进展回访：您的材料已交律师本人整理，下一步安排由律师与您直接沟通。如有新的材料或问题，回复我即可，我转交律师。",
+                timeline: [
+                  { t: "3 天前", text: "客户确认已收到，回访结束" },
+                  { t: "4 天前", text: "智能体：发送进展回访消息" }
+                ]
+              }
+            ]
+          },
+          en: {
+            salesDesk: "Desk · Law firm example",
+            salesNote: "Law firm example: intake → consultation booking → case documents → lawyer confirms engagement → progress check-in. The agent reminds consultation scheduling, missing documents, and progress check-ins; legal advice comes only from the lawyer in person, and the lead is handed to the lawyer to confirm engagement and fees.",
+            sceneNotice: "Legal questions are answered by the lawyer in person · The assistant gives no legal opinions, makes no predictions or promises about case outcomes, and never quotes legal fees; it only logs inquiries, books consultations, chases case documents, and sends progress check-ins; the inquiry is then handed to the lawyer to confirm engagement and fees.",
+            stages: ["Intake", "Consult booking", "Case documents", "Lawyer confirms engagement", "Progress check-in"],
+            csMsg1: "Hi — law firm front-desk assistant (example). I can log an inquiry, book a consultation with a lawyer, or send a document checklist; legal questions are answered by the lawyer in person.",
+            csMsg2: "I’d like to ask about a labour dispute — can I book a consultation first?",
+            csMsg3: "Yes. Legal advice can only come from the lawyer after a consultation, so I’ll log your inquiry first. Wed 10:00 and Thu 15:00 are open for a meeting — which suits you?",
+            csHint3: "Inquiry logged · no legal opinions from the assistant; the lawyer answers in person",
+            csReplies: [
+              "Noted. To book a consultation, just tell me a time window.",
+              "That needs a lawyer’s judgment — the assistant can’t give an opinion. I’ve logged it and passed it to the lawyer.",
+              "OK, I’ll send the document checklist. The assistant doesn’t quote legal fees — this is handed to the lawyer to confirm engagement and fees."
+            ],
+            csDemoHint: "Demo reply · no legal opinions, case-outcome predictions, or fee quotes",
+            leads: [
+              {
+                id: "lawfirm-1", name: "Sample client V · labour dispute · first consultation", stage: "Consult booking", last: "2 days ago",
+                note: "Website message · prefers weekday afternoons · Tel 138-0000-0022 (fictional)", status: "todo",
+                suggest: "Hi — we received your labour dispute inquiry. Legal advice can only come from the lawyer in person after a consultation, so let me book your first meeting: Wed 10:00 or Thu 15:00? Please bring your employment contract, wage records, and related messages.",
+                timeline: [
+                  { t: "Today 09:15", text: "Agent: consultation booking reminder created" },
+                  { t: "2 days ago", text: "Front desk: call to confirm the inquiry topic" },
+                  { t: "3 days ago", text: "Lead in · website message" }
+                ]
+              },
+              {
+                id: "lawfirm-2", name: "Sample client W · contract dispute document checklist", stage: "Case documents", last: "Yesterday",
+                note: "Consulted · documents incomplete · Tel 138-0000-0023 (fictional)", status: "run",
+                suggest: "Hi — these items from the lawyer’s document list are still missing: contract scan, performance records, correspondence records. Upload them to the shared link and I’ll let the lawyer know.",
+                timeline: [
+                  { t: "Yesterday 17:30", text: "Missing-documents reminder sent, awaiting reply" },
+                  { t: "3 days ago", text: "Lawyer consultation done · document list issued" }
+                ]
+              },
+              {
+                id: "lawfirm-3", name: "Sample client X · check-in after lawyer confirmed engagement", stage: "Progress check-in", last: "3 days ago",
+                note: "Lawyer confirmed engagement · Tel 138-0000-0024 (fictional)", status: "done",
+                suggest: "Hi — this is a first check-in after the lawyer confirmed your engagement: your documents are with the lawyer, who will contact you directly about next steps. If you have new documents or questions, just reply and I’ll pass them on.",
+                timeline: [
+                  { t: "3 days ago", text: "Client confirmed receipt; check-in closed" },
+                  { t: "4 days ago", text: "Agent: sent progress check-in" }
+                ]
+              }
+            ]
+          }
         }
       };
 
-      var SCENE_KEYS = ["law", "decor", "clinic", "moving", "crossborder", "edu", "fitout"];
+      var SCENE_KEYS = ["law", "decor", "clinic", "moving", "crossborder", "edu", "fitout", "lawfirm"];
       var SCENE_ALIASES = { home: "decor" };
       var scene = "";
       try {
